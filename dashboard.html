@@ -324,56 +324,6 @@
                     }
                 });
 
-                // Supply Chain Chart
-                this.charts.supply = new Chart(document.getElementById('supplyChart'), {
-                    type: 'line',
-                    data: {
-                        labels: data.supplyChainData.years,
-                        datasets: [{
-                            label: 'Regional',
-                            data: data.supplyChainData.regional,
-                            borderColor: '#667eea',
-                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                            tension: 0.4
-                        }, {
-                            label: 'Global',
-                            data: data.supplyChainData.global,
-                            borderColor: '#764ba2',
-                            backgroundColor: 'rgba(118, 75, 162, 0.1)',
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
-                    }
-                });
-
-                // Tech Decoupling Chart
-                this.charts.tech = new Chart(document.getElementById('techChart'), {
-                    type: 'radar',
-                    data: {
-                        labels: Object.keys(data.techDecoupling),
-                        datasets: [{
-                            label: 'Decoupling Score',
-                            data: Object.values(data.techDecoupling),
-                            borderColor: '#667eea',
-                            backgroundColor: 'rgba(102, 126, 234, 0.2)'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 100
-                            }
-                        }
-                    }
-                });
-
                 // FDI Chart
                 this.charts.fdiGdp = new Chart(document.getElementById('fdiGdpChart'), {
                     type: 'line',
@@ -423,27 +373,7 @@
                         }
                     }
                 });
-                // Sanctions Chart
-                this.charts.sanctions = new Chart(document.getElementById('sanctionsChart'), {
-                    type: 'line',
-                    data: {
-                        labels: data.sanctions.years,
-                        datasets: [{
-                            label: 'Active Measures',
-                            data: data.sanctions.byYear,
-                            borderColor: '#dc2626',
-                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
+
             }
 
             updateChart(chartName, newData) {
@@ -474,13 +404,31 @@
                 dataManager.calculateFragmentationIndex(staticData);
             document.getElementById('usdShare').textContent = 
                 staticData.currencyData.current[0] + '%';
-            document.getElementById('regionalTrade').textContent = 
-                staticData.supplyChainData.regional[staticData.supplyChainData.regional.length - 1] + '%';
-            document.getElementById('techScore').textContent = 
-                Math.round(Object.values(staticData.techDecoupling).reduce((a,b) => a+b) / 5);
-            document.getElementById('sanctionCount').textContent = 
-                staticData.sanctions.count.toLocaleString();
+            // Update FDI metrics
+const currentYear = staticData.fdiGdpData.years.length - 1;
+const prevYear = currentYear - 1;
 
+document.getElementById('usaFdi').textContent = 
+    staticData.fdiGdpData.USA[currentYear].toFixed(2) + '%';
+document.getElementById('chinaFdi').textContent = 
+    staticData.fdiGdpData.China[currentYear].toFixed(2) + '%';
+document.getElementById('euFdi').textContent = 
+    staticData.fdiGdpData.EU[currentYear].toFixed(2) + '%';
+
+// Calculate trends
+const usaTrend = ((staticData.fdiGdpData.USA[currentYear] - staticData.fdiGdpData.USA[prevYear]) / staticData.fdiGdpData.USA[prevYear] * 100).toFixed(1);
+const chinaTrend = ((staticData.fdiGdpData.China[currentYear] - staticData.fdiGdpData.China[prevYear]) / staticData.fdiGdpData.China[prevYear] * 100).toFixed(1);
+const euTrend = ((staticData.fdiGdpData.EU[currentYear] - staticData.fdiGdpData.EU[prevYear]) / staticData.fdiGdpData.EU[prevYear] * 100).toFixed(1);
+
+document.getElementById('usaTrend').textContent = (usaTrend > 0 ? '+' : '') + usaTrend + '%';
+document.getElementById('chinaTrend').textContent = (chinaTrend > 0 ? '+' : '') + chinaTrend + '%';
+document.getElementById('euTrend').textContent = (euTrend > 0 ? '+' : '') + euTrend + '%';
+
+// Update trend colors
+document.getElementById('usaTrend').className = usaTrend > 0 ? 'trend up' : 'trend down';
+document.getElementById('chinaTrend').className = chinaTrend > 0 ? 'trend up' : 'trend down';
+document.getElementById('euTrend').className = euTrend > 0 ? 'trend up' : 'trend down';
+            
             // Try to fetch live data
             const liveSuccess = await dataManager.fetchLiveData();
             
@@ -495,8 +443,6 @@
             document.getElementById('lastUpdate').textContent = 
                 new Date().toLocaleTimeString();
 
-            // Initialize map visualization
-            initTradeMap();
 
             // Set up periodic updates
             setInterval(async () => {
@@ -506,66 +452,6 @@
                         new Date().toLocaleTimeString();
                 }
             }, config.updateInterval);
-        }
-
-        // Simple trade flow visualization
-        function initTradeMap() {
-            const width = document.getElementById('tradeMap').offsetWidth;
-            const height = 400;
-
-            const svg = d3.select('#tradeMap')
-                .html('')
-                .append('svg')
-                .attr('width', width)
-                .attr('height', height);
-
-            // Sample bloc positions
-            const blocs = [
-                {name: 'USMCA', x: width * 0.2, y: height * 0.3, size: 24},
-                {name: 'EU', x: width * 0.5, y: height * 0.2, size: 21},
-                {name: 'RCEP', x: width * 0.8, y: height * 0.4, size: 28},
-                {name: 'ASEAN', x: width * 0.7, y: height * 0.6, size: 12},
-                {name: 'Mercosur', x: width * 0.3, y: height * 0.7, size: 5}
-            ];
-
-            // Draw connections (trade flows)
-            const connections = [
-                [0, 1, 0.8], [0, 2, 0.4], [1, 2, 0.3],
-                [2, 3, 0.9], [0, 4, 0.6], [1, 3, 0.5]
-            ];
-
-            connections.forEach(([source, target, strength]) => {
-                svg.append('line')
-                    .attr('x1', blocs[source].x)
-                    .attr('y1', blocs[source].y)
-                    .attr('x2', blocs[target].x)
-                    .attr('y2', blocs[target].y)
-                    .attr('stroke', '#667eea')
-                    .attr('stroke-width', strength * 3)
-                    .attr('opacity', 0.3);
-            });
-
-            // Draw bloc nodes
-            const nodes = svg.selectAll('g')
-                .data(blocs)
-                .enter()
-                .append('g');
-
-            nodes.append('circle')
-                .attr('cx', d => d.x)
-                .attr('cy', d => d.y)
-                .attr('r', d => Math.sqrt(d.size) * 5)
-                .attr('fill', '#667eea')
-                .attr('opacity', 0.8);
-
-            nodes.append('text')
-                .attr('x', d => d.x)
-                .attr('y', d => d.y + 5)
-                .attr('text-anchor', 'middle')
-                .attr('fill', 'white')
-                .attr('font-weight', 'bold')
-                .attr('font-size', '12px')
-                .text(d => d.name);
         }
 
         // Start the dashboard
