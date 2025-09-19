@@ -1,31 +1,59 @@
-import pandas as pd
-   import json
-   
-   # Read CSV
-   df = pd.read_csv('worldbank_fdi.csv', skiprows=4)
-   
-   # Process and save as JSON
-   fdi_data = {
-       "metadata": {
-           "source": "World Bank",
-           "indicator": "BX.KLT.DINV.WD.GD.ZS",
-           "last_updated": "2024-12-15"
-       },
-       "data": {}
-   }
-   
-   for country in ['United States', 'China', 'European Union']:
-       country_data = df[df['Country Name'] == country]
-       values = {}
-       for year in range(2015, 2025):
-           year_str = str(year)
-           if year_str in country_data.columns:
-               values[year_str] = float(country_data[year_str].values[0])
-       
-       fdi_data['data'][country] = {
-           "country_name": country,
-           "values": values
-       }
-   
-   with open('data/fdi_gdp_data.json', 'w') as f:
-       json.dump(fdi_data, f, indent=2)
+{
+  "metadata": {
+    "source": "World Bank",
+    "indicator": "BX.KLT.DINV.WD.GD.ZS",
+    "description": "Foreign direct investment, net inflows (% of GDP)",
+    "last_updated": "2024-12-15",
+    "unit": "percentage"
+  },
+  "data": {
+    "USA": {
+      "country_code": "USA",
+      "country_name": "United States",
+      "values": {
+        "2015": 2.43,
+        "2016": 2.67,
+        "2017": 1.87,
+        "2018": 1.44,
+        "2019": 1.65,
+        "2020": 1.98,
+        "2021": 2.11,
+        "2022": 1.53,
+        "2023": 1.42,
+        "2024": 1.38
+      }
+    },
+    "CHN": {
+      "country_code": "CHN",
+      "country_name": "China",
+      "values": {
+        "2015": 2.23,
+        "2016": 1.56,
+        "2017": 1.35,
+        "2018": 1.68,
+        "2019": 1.34,
+        "2020": 1.54,
+        "2021": 1.95,
+        "2022": 0.89,
+        "2023": 0.52,
+        "2024": 0.48
+      }
+    },
+    "EUU": {
+      "country_code": "EUU",
+      "country_name": "European Union",
+      "values": {
+        "2015": 3.87,
+        "2016": 2.94,
+        "2017": 2.45,
+        "2018": 1.82,
+        "2019": 2.73,
+        "2020": 3.45,
+        "2021": 2.89,
+        "2022": 2.13,
+        "2023": 1.76,
+        "2024": 1.82
+      }
+    }
+  }
+}
