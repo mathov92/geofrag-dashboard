@@ -171,7 +171,7 @@
         </div>
 
         <!-- FDI Patterns -->
-        <div class="grid">
+ <div class="grid">
             <div class="card">
                 <h2>FDI Flow Patterns</h2>
                 <canvas id="fdiChart"></canvas>
@@ -187,7 +187,29 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- FDI as % of GDP Comparison -->
+        <div class="card">
+            <h2>FDI Inflows as % of GDP - Major Economies</h2>
+            <canvas id="fdiGdpChart"></canvas>
+            <div class="grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 15px;">
+                <div class="metric">
+                    <span>🇺🇸 USA</span>
+                    <span class="metric-value" id="usaFdi">--</span>
+                    <span class="trend down" id="usaTrend">--</span>
+                </div>
+                <div class="metric">
+                    <span>🇨🇳 China</span>
+                    <span class="metric-value" id="chinaFdi">--</span>
+                    <span class="trend down" id="chinaTrend">--</span>
+                </div>
+                <div class="metric">
+                    <span>🇪🇺 EU</span>
+                    <span class="metric-value" id="euFdi">--</span>
+                    <span class="trend down" id="euTrend">--</span>
+                </div>
+            </div>
+        </div>
 
     <script>
         // Configuration
@@ -392,29 +414,54 @@
                 });
 
                 // FDI Chart
-                this.charts.fdi = new Chart(document.getElementById('fdiChart'), {
-                    type: 'bar',
+                this.charts.fdiGdp = new Chart(document.getElementById('fdiGdpChart'), {
+                    type: 'line',
                     data: {
-                        labels: data.fdiFlows.years,
+                        labels: data.fdiGdpData.years,
                         datasets: [{
-                            label: 'Intra-bloc',
-                            data: data.fdiFlows.intraBloc,
-                            backgroundColor: '#667eea'
+                            label: 'USA',
+                            data: data.fdiGdpData.USA,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
                         }, {
-                            label: 'Inter-bloc',
-                            data: data.fdiFlows.interBloc,
-                            backgroundColor: '#764ba2'
+                            label: 'China',
+                            data: data.fdiGdpData.China,
+                            borderColor: '#dc2626',
+                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: 'EU',
+                            data: data.fdiGdpData.EU,
+                            borderColor: '#fbbf24',
+                            backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                            tension: 0.4
                         }]
                     },
                     options: {
                         responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%';
+                                    }
+                                }
+                            }
+                        },
                         scales: {
-                            x: { stacked: true },
-                            y: { stacked: true }
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
                         }
                     }
                 });
-
                 // Sanctions Chart
                 this.charts.sanctions = new Chart(document.getElementById('sanctionsChart'), {
                     type: 'line',
