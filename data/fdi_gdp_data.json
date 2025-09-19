@@ -1,0 +1,31 @@
+import pandas as pd
+   import json
+   
+   # Read CSV
+   df = pd.read_csv('worldbank_fdi.csv', skiprows=4)
+   
+   # Process and save as JSON
+   fdi_data = {
+       "metadata": {
+           "source": "World Bank",
+           "indicator": "BX.KLT.DINV.WD.GD.ZS",
+           "last_updated": "2024-12-15"
+       },
+       "data": {}
+   }
+   
+   for country in ['United States', 'China', 'European Union']:
+       country_data = df[df['Country Name'] == country]
+       values = {}
+       for year in range(2015, 2025):
+           year_str = str(year)
+           if year_str in country_data.columns:
+               values[year_str] = float(country_data[year_str].values[0])
+       
+       fdi_data['data'][country] = {
+           "country_name": country,
+           "values": values
+       }
+   
+   with open('data/fdi_gdp_data.json', 'w') as f:
+       json.dump(fdi_data, f, indent=2)
