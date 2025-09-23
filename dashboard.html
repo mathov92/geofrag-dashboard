@@ -163,9 +163,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-   <!-- Harmful Trade Restrictions -->
+        <!-- Harmful Trade Restrictions -->
         <div class="card">
             <h2>Harmful Trade Restrictions (2009-2025)</h2>
             <canvas id="restrictionsChart"></canvas>
@@ -175,7 +173,9 @@
                 <span class="trend up" id="restrictionsTrend">--</span>
             </div>
         </div>
-        
+            
+    </div> 
+</div>  
     <script>
         // Configuration
         const config = {
@@ -248,7 +248,7 @@
                             USA: [2.43, 2.67, 1.87, 1.44, 1.65, 1.98, 2.11, 1.53, 1.42, 1.38],
                             China: [2.23, 1.56, 1.35, 1.68, 1.34, 1.54, 1.95, 0.89, 0.52, 0.48],
                             EU: [3.87, 2.94, 2.45, 1.82, 2.73, 3.45, 2.89, 2.13, 1.76, 1.82]
-                        }
+                        },
                         tradeRestrictions: {
                            years: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
                            G7: [145, 187, 234, 276, 298, 342, 389, 456, 487, 542, 589, 687, 745, 812, 867, 923, 945],
@@ -389,68 +389,70 @@
                         }
                     }
                 });
-
-            }
-
-            // Trade Restrictions Chart
-this.charts.restrictions = new Chart(document.getElementById('restrictionsChart'), {
-    type: 'bar',
-    data: {
-        labels: data.tradeRestrictions.years,
-        datasets: [{
-            label: 'G7',
-            data: data.tradeRestrictions.G7,
-            backgroundColor: '#3b82f6',
-            stack: 'Stack 0',
-        }, {
-            label: 'BRICS',
-            data: data.tradeRestrictions.BRICS,
-            backgroundColor: '#dc2626',
-            stack: 'Stack 0',
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { 
-                position: 'bottom',
-                labels: {
-                    boxWidth: 15
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return context.dataset.label + ': ' + context.parsed.y + ' restrictions';
+// Trade Restrictions Chart
+                this.charts.restrictions = new Chart(document.getElementById('restrictionsChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: data.tradeRestrictions.years,
+                        datasets: [{
+                            label: 'G7',
+                            data: data.tradeRestrictions.G7,
+                            backgroundColor: '#3b82f6',
+                            stack: 'Stack 0',
+                        }, {
+                            label: 'BRICS',
+                            data: data.tradeRestrictions.BRICS,
+                            backgroundColor: '#dc2626',
+                            stack: 'Stack 0',
+                        }]
                     },
-                    footer: function(tooltipItems) {
-                        let sum = 0;
-                        tooltipItems.forEach(function(tooltipItem) {
-                            sum += tooltipItem.parsed.y;
-                        });
-                        return 'Total: ' + sum + ' restrictions';
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { 
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y + ' restrictions';
+                                    },
+                                    footer: function(tooltipItems) {
+                                        let sum = 0;
+                                        tooltipItems.forEach(function(tooltipItem) {
+                                            sum += tooltipItem.parsed.y;
+                                        });
+                                        return 'Total: ' + sum + ' restrictions';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Year'
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Restrictions'
+                                }
+                            }
+                        }
                     }
-                }
+                });
+
+                
             }
-        },
-        scales: {
-            x: {
-                stacked: true,
-                title: {
-                    display: true,
-                    text: 'Year'
-                }
-            },
-            y: {
-                stacked: true,
-                title: {
-                    display: true,
-                    text: 'Number of Restrictions'
-                }
-            }
-        }
-    }
-});
+
+                
 
             updateChart(chartName, newData) {
                 if (this.charts[chartName]) {
