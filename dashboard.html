@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard: Geoøkonomisk Fragmentering</title>
+    <title>Geoeconomic Fragmentation Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
@@ -96,11 +96,18 @@
             padding: 40px;
             color: #999;
         }
+        .citation {
+            font-size: 0.75em;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
     <div class="dashboard">
-        <h1>🌍 Geoeconomic Fragmentation Dashboard</h1>
+        <h1>Geoeconomic Fragmentation Dashboard</h1>
         
         <div class="status-bar">
             <div class="status">
@@ -123,31 +130,31 @@
 
             <!-- Currency Usage Trends -->
             <div class="card">
-                <h2>Reservevaluta andele</h2>
+                <h2>Reserve Currency Shares</h2>
                 <canvas id="currencyChart"></canvas>
                 <div class="metric">
-                    <span>USD Dominans</span>
+                    <span>USD Dominance</span>
                     <span class="metric-value" id="usdShare">--</span>
                 </div>
             </div>
 
             <!-- FDI as % of GDP Comparison -->
             <div class="card">
-                <h2>FDI Inflow som % af BNP</h2>
+                <h2>FDI Inflows as % of GDP - Major Economies</h2>
                 <canvas id="fdiGdpChart"></canvas>
                 <div class="grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 15px;">
                     <div class="metric">
-                        <span>🇺🇸 USA</span>
+                        <span>USA</span>
                         <span class="metric-value" id="usaFdi">--</span>
                         <span class="trend down" id="usaTrend">--</span>
                     </div>
                     <div class="metric">
-                        <span>🇨🇳 China</span>
+                        <span>China</span>
                         <span class="metric-value" id="chinaFdi">--</span>
                         <span class="trend down" id="chinaTrend">--</span>
                     </div>
                     <div class="metric">
-                        <span>🇪🇺 EU</span>
+                        <span>EU</span>
                         <span class="metric-value" id="euFdi">--</span>
                         <span class="trend down" id="euTrend">--</span>
                     </div>
@@ -167,12 +174,27 @@
 
             <!-- Geopolitical Risk Index -->
             <div class="card">
-                <h2>Geopolitisk Risk Index (2020-2025)</h2>
+                <h2>Geopolitical Risk Index (2020-2025)</h2>
                 <canvas id="geoRiskChart"></canvas>
                 <div class="metric">
                     <span>Current Risk Level</span>
                     <span class="metric-value" id="currentRisk">--</span>
                     <span class="trend up" id="riskTrend">--</span>
+                </div>
+            </div>
+
+            <!-- Trade Policy Uncertainty Index -->
+            <div class="card">
+                <h2>Trade Policy Uncertainty Index</h2>
+                <canvas id="tpuChart"></canvas>
+                <div class="metric">
+                    <span>Current TPU Level</span>
+                    <span class="metric-value" id="currentTPU">--</span>
+                    <span class="trend up" id="tpuTrend">--</span>
+                </div>
+                <div class="citation">
+                    Source: Caldara, D., Iacoviello, M., Molligo, P., Prestipino, A., & Raffo, A. (2020). 
+                    "The economic effects of trade policy uncertainty." Journal of Monetary Economics, 109, 38-59.
                 </div>
             </div>
         </div>
@@ -228,6 +250,20 @@
                                     104.27, 120.99, 105.38, 106.81, 108.47, 110.53, 107.45, 101.14, 98.63, 197.89, 156.70, 142.28,
                                     160.16, 146.60, 133.21, 163.74, 130.52, 112.88, 92.39, 140.76, 130.14, 130.69, 128.48, 142.13,
                                     112.33, 136.20, 172.85, 138.71, 165.41, 221.73, 134.99, 136.00]
+                        },
+                        tpuIndex: {
+                            dates: ['Jan-20', 'Feb-20', 'Mar-20', 'Apr-20', 'May-20', 'Jun-20', 'Jul-20', 'Aug-20', 'Sep-20', 'Oct-20', 'Nov-20', 'Dec-20',
+                                   'Jan-21', 'Feb-21', 'Mar-21', 'Apr-21', 'May-21', 'Jun-21', 'Jul-21', 'Aug-21', 'Sep-21', 'Oct-21', 'Nov-21', 'Dec-21',
+                                   'Jan-22', 'Feb-22', 'Mar-22', 'Apr-22', 'May-22', 'Jun-22', 'Jul-22', 'Aug-22', 'Sep-22', 'Oct-22', 'Nov-22', 'Dec-22',
+                                   'Jan-23', 'Feb-23', 'Mar-23', 'Apr-23', 'May-23', 'Jun-23', 'Jul-23', 'Aug-23', 'Sep-23', 'Oct-23', 'Nov-23', 'Dec-23',
+                                   'Jan-24', 'Feb-24', 'Mar-24', 'Apr-24', 'May-24', 'Jun-24', 'Jul-24', 'Aug-24', 'Sep-24', 'Oct-24', 'Nov-24', 'Dec-24',
+                                   'Jan-25', 'Feb-25', 'Mar-25', 'Apr-25', 'May-25', 'Jun-25', 'Jul-25', 'Aug-25'],
+                            values: [1.40, 0.96, 0.61, 0.55, 0.67, 0.60, 0.57, 0.67, 0.68, 0.70, 0.70, 0.98,
+                                    0.75, 0.37, 0.47, 0.48, 0.49, 0.49, 0.57, 0.39, 0.52, 0.56, 0.48, 0.37,
+                                    0.47, 0.54, 0.54, 0.41, 0.63, 0.75, 0.67, 0.66, 0.49, 0.47, 0.49, 0.49,
+                                    0.53, 0.44, 0.65, 0.34, 0.60, 0.52, 0.63, 0.60, 0.64, 0.44, 0.41, 0.65,
+                                    0.70, 0.63, 0.82, 0.91, 0.94, 0.89, 1.01, 0.98, 1.29, 1.48, 3.73, 2.48,
+                                    3.61, 4.70, 6.03, 11.51, 7.23, 4.73, 5.55, 5.76]
                         }
                     };
                 } catch (error) {
@@ -477,6 +513,71 @@
                         }
                     }
                 });
+
+                // Trade Policy Uncertainty Index Chart
+                this.charts.tpu = new Chart(document.getElementById('tpuChart'), {
+                    type: 'line',
+                    data: {
+                        labels: data.tpuIndex.dates,
+                        datasets: [{
+                            label: 'TPU Index (% of articles)',
+                            data: data.tpuIndex.values,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 1,
+                            pointHoverRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(context) {
+                                        return context[0].label;
+                                    },
+                                    label: function(context) {
+                                        const value = context.parsed.y;
+                                        let event = '';
+                                        if (context.label === 'Nov-24') {
+                                            event = ' (US Election)';
+                                        } else if (context.label === 'Apr-25') {
+                                            event = ' (Peak: 11.51%)';
+                                        }
+                                        return 'TPU: ' + value.toFixed(2) + '%' + event;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                ticks: {
+                                    maxTicksLimit: 12,
+                                    callback: function(val, index) {
+                                        const label = this.getLabelForValue(val);
+                                        return label && label.includes('Jan') ? label : '';
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Percent of Articles'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
             }
 
             updateChart(chartName, newData) {
@@ -541,6 +642,17 @@
             const riskChange = ((currentRisk - previousRisk) / previousRisk * 100).toFixed(1);
             document.getElementById('riskTrend').textContent = (riskChange > 0 ? '+' : '') + riskChange + '%';
             document.getElementById('riskTrend').className = riskChange > 0 ? 'trend up' : 'trend down';
+
+            // Update TPU metrics
+            const tpuValues = staticData.tpuIndex.values;
+            const currentTPU = tpuValues[tpuValues.length - 1];
+            const previousTPU = tpuValues[tpuValues.length - 2];
+
+            document.getElementById('currentTPU').textContent = currentTPU.toFixed(2) + '%';
+
+            const tpuChange = ((currentTPU - previousTPU) / previousTPU * 100).toFixed(1);
+            document.getElementById('tpuTrend').textContent = (tpuChange > 0 ? '+' : '') + tpuChange + '%';
+            document.getElementById('tpuTrend').className = tpuChange > 0 ? 'trend up' : 'trend down';
 
             // Calculate FDI trends
             const usaTrend = ((staticData.fdiGdpData.USA[currentYear] - staticData.fdiGdpData.USA[prevYear]) / 
