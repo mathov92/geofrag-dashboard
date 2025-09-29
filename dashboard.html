@@ -27,11 +27,11 @@
             letter-spacing: 0.02em;
         }
         .status-bar {
-            background: #4D4D4D;
+            background: #EE3A36;
             border-radius: 4px;
             padding: 12px 24px;
             margin-bottom: 20px;
-            color: #DEDEDE;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -138,6 +138,9 @@
                     <span>USD Dominance</span>
                     <span class="metric-value" id="usdShare">--</span>
                 </div>
+                <div class="citation">
+                    Source: IMF Currency Composition of Official Foreign Exchange Reserves (COFER)
+                </div>
             </div>
 
             <!-- FDI as % of GDP Comparison -->
@@ -161,6 +164,9 @@
                         <span class="trend down" id="euTrend">--</span>
                     </div>
                 </div>
+                <div class="citation">
+                    Source: World Bank Foreign Direct Investment Database
+                </div>
             </div>
 
             <!-- Harmful Trade Restrictions -->
@@ -171,6 +177,9 @@
                     <span>Total Restrictions 2025</span>
                     <span class="metric-value" id="totalRestrictions">--</span>
                     <span class="trend up" id="restrictionsTrend">--</span>
+                </div>
+                <div class="citation">
+                    Source: Global Trade Alert Database
                 </div>
             </div>
 
@@ -304,7 +313,7 @@
                         datasets: [{
                             label: 'Share %',
                             data: data.currencyData.current,
-                            backgroundColor: '#005A8C'
+                            backgroundColor: ['#005A8C', '#F5D547', '#EE3A36', '#6FA8DC', '#2A6965', '#A61E4C']
                         }]
                     },
                     options: {
@@ -649,7 +658,7 @@
                 document.getElementById('dataStatus').textContent = 'Live data';
                 document.getElementById('liveIndicator').style.display = 'inline-block';
             } else {
-                document.getElementById('dataStatus').textContent = 'Using cached data';
+                document.getElementById('dataStatus').textContent = '';
             }
             
             document.getElementById('lastUpdate').textContent = 
