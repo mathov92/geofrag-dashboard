@@ -9,8 +9,8 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Garamond', 'Georgia', serif;
+            background: #DEDEDE;
             min-height: 100vh;
             padding: 20px;
         }
@@ -19,27 +19,31 @@
             margin: 0 auto;
         }
         h1 {
-            color: white;
+            color: #5A1C26;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 2.8em;
+            font-weight: normal;
+            letter-spacing: 0.02em;
         }
         .status-bar {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 10px 20px;
+            background: #4D4D4D;
+            border-radius: 4px;
+            padding: 12px 24px;
             margin-bottom: 20px;
-            color: white;
+            color: #DEDEDE;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .status { font-size: 0.9em; }
+        .status { 
+            font-size: 0.95em;
+            letter-spacing: 0.01em;
+        }
         .live-indicator {
             width: 10px;
             height: 10px;
-            background: #4ade80;
+            background: #6A8F7F;
             border-radius: 50%;
             animation: pulse 2s infinite;
             display: inline-block;
@@ -57,51 +61,59 @@
         }
         .card {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.15);
             transition: transform 0.3s ease;
+            border: 1px solid #E8E8E8;
         }
-        .card:hover { transform: translateY(-5px); }
+        .card:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.2);
+        }
         .card h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3em;
+            color: #5A1C26;
+            margin-bottom: 18px;
+            font-size: 1.4em;
+            font-weight: normal;
+            letter-spacing: 0.01em;
         }
         .metric {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin: 10px 0;
-            padding: 10px;
-            background: #f7f7f7;
-            border-radius: 8px;
+            padding: 12px;
+            background: #F5F5F5;
+            border-radius: 4px;
+            border: 1px solid #E8E8E8;
         }
         .metric-value {
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: bold;
-            color: #667eea;
+            color: #2A6965;
         }
         .trend {
             padding: 4px 8px;
-            border-radius: 4px;
+            border-radius: 3px;
             font-size: 0.85em;
             font-weight: bold;
         }
-        .trend.up { background: #fef2f2; color: #dc2626; }
-        .trend.down { background: #f0fdf4; color: #16a34a; }
+        .trend.up { background: #FFEBE9; color: #EE3A36; }
+        .trend.down { background: #E8F4F0; color: #2A6965; }
         canvas { max-height: 300px; }
         .loading {
             text-align: center;
             padding: 40px;
-            color: #999;
+            color: #4D4D4D;
         }
         .citation {
-            font-size: 0.75em;
-            color: #666;
+            font-size: 0.8em;
+            color: #6D6D6D;
             font-style: italic;
-            margin-top: 10px;
-            line-height: 1.4;
+            margin-top: 12px;
+            line-height: 1.5;
+            letter-spacing: 0.01em;
         }
     </style>
 </head>
@@ -118,16 +130,6 @@
         </div>
 
         <div class="grid">
-            <!-- Trade Bloc Concentration -->
-            <div class="card">
-                <h2>Trade Bloc Concentration</h2>
-                <canvas id="blocChart"></canvas>
-                <div class="metric">
-                    <span>Fragmentation Index</span>
-                    <span class="metric-value" id="fragIndex">--</span>
-                </div>
-            </div>
-
             <!-- Currency Usage Trends -->
             <div class="card">
                 <h2>Reserve Currency Shares</h2>
@@ -182,7 +184,7 @@
                     <span class="trend up" id="riskTrend">--</span>
                 </div>
                 <div class="citation">
-                    Source: Caldara, Dario and Matteo Iacoviello (2022), “Measuring Geopolitical Risk”
+                    Source: Caldara, Dario and Matteo Iacoviello (2022), "Measuring Geopolitical Risk"
                 </div>
             </div>
 
@@ -221,10 +223,6 @@
             async loadStaticData() {
                 try {
                     return {
-                        blocData: {
-                            labels: ['USMCA', 'EU', 'ASEAN', 'RCEP', 'Mercosur', 'Other'],
-                            values: [24, 21, 12, 28, 5, 10]
-                        },
                         currencyData: {
                             labels: ['USD', 'EUR', 'CNY', 'JPY', 'GBP', 'Other'],
                             current: [59.2, 20.1, 12.3, 5.2, 4.9, 8.3]
@@ -289,12 +287,6 @@
                 }
                 return false;
             }
-
-            calculateFragmentationIndex(data) {
-                const herfindahl = data.blocData.values.reduce((sum, val) => 
-                    sum + Math.pow(val/100, 2), 0);
-                return (1 - herfindahl).toFixed(3);
-            }
         }
 
         // Chart Manager
@@ -304,27 +296,6 @@
             }
 
             initCharts(data) {
-                // Trade Bloc Chart
-                this.charts.bloc = new Chart(document.getElementById('blocChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: data.blocData.labels,
-                        datasets: [{
-                            data: data.blocData.values,
-                            backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a'],
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
-                    }
-                });
-
                 // Currency Chart
                 this.charts.currency = new Chart(document.getElementById('currencyChart'), {
                     type: 'bar',
@@ -333,7 +304,7 @@
                         datasets: [{
                             label: 'Share %',
                             data: data.currencyData.current,
-                            backgroundColor: '#667eea'
+                            backgroundColor: '#005A8C'
                         }]
                     },
                     options: {
@@ -355,20 +326,20 @@
                         datasets: [{
                             label: 'USA',
                             data: data.fdiGdpData.USA,
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: '#005A8C',
+                            backgroundColor: 'rgba(0, 90, 140, 0.1)',
                             tension: 0.4
                         }, {
                             label: 'China',
                             data: data.fdiGdpData.China,
-                            borderColor: '#dc2626',
-                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                            borderColor: '#EE3A36',
+                            backgroundColor: 'rgba(238, 58, 54, 0.1)',
                             tension: 0.4
                         }, {
                             label: 'EU',
                             data: data.fdiGdpData.EU,
-                            borderColor: '#fbbf24',
-                            backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                            borderColor: '#F5D547',
+                            backgroundColor: 'rgba(245, 213, 71, 0.1)',
                             tension: 0.4
                         }]
                     },
@@ -405,12 +376,12 @@
                         datasets: [{
                             label: 'G7',
                             data: data.tradeRestrictions.G7,
-                            backgroundColor: '#3b82f6',
+                            backgroundColor: '#6FA8DC',
                             stack: 'Stack 0',
                         }, {
                             label: 'BRICS',
                             data: data.tradeRestrictions.BRICS,
-                            backgroundColor: '#dc2626',
+                            backgroundColor: '#A61E4C',
                             stack: 'Stack 0',
                         }]
                     },
@@ -463,8 +434,8 @@
                         datasets: [{
                             label: 'Geopolitical Risk Index',
                             data: data.geoRiskIndex.values,
-                            borderColor: '#dc2626',
-                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                            borderColor: '#EE3A36',
+                            backgroundColor: 'rgba(238, 58, 54, 0.1)',
                             tension: 0.4,
                             fill: true,
                             pointRadius: 1,
@@ -525,8 +496,8 @@
                         datasets: [{
                             label: 'TPU Index (% of articles)',
                             data: data.tpuIndex.values,
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderColor: '#2A6965',
+                            backgroundColor: 'rgba(42, 105, 101, 0.1)',
                             tension: 0.4,
                             fill: true,
                             pointRadius: 1,
@@ -605,8 +576,6 @@
             chartManager.initCharts(staticData);
 
             // Update metrics
-            document.getElementById('fragIndex').textContent = 
-                dataManager.calculateFragmentationIndex(staticData);
             document.getElementById('usdShare').textContent = 
                 staticData.currencyData.current[0] + '%';
 
