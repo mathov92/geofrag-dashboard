@@ -160,11 +160,6 @@
             width: 100%;
             height: 24px;
             margin: 0 10px;
-            /* Remove these lines:
-            transform: rotate(-90deg);
-            transform-origin: center;
-            position: absolute;
-            top: 90px; */
         }
         
         .slider-labels {
@@ -180,19 +175,64 @@
             padding: 0 15px;
         }
         
-        .slider-label-top {
-            /* This will now be the right label */
+        .slider-label-left {
             position: relative;
         }
         
-        .slider-label-bottom {
-            /* This will now be the left label */
+        .slider-label-right {
             position: relative;
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-track {
+            background: #E8E8E8;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        input[type="range"]::-moz-range-track {
+            background: #E8E8E8;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #2A6965;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            cursor: grab;
+            margin-top: -6px;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            background: #2A6965;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            cursor: grab;
+            border: none;
+        }
+        
+        input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
+        }
+        
+        input[type="range"]:active::-moz-range-thumb {
+            cursor: grabbing;
         }
         
         .chart-wrapper {
             padding-bottom: 20px;
-            /* Remove: padding-right: 50px; */
+            position: relative;
         }
         
         .tooltip-slider {
@@ -231,8 +271,8 @@
             <h2>Handelsåbenhed (Handel/BNP %)</h2>
             <div class="slider-container wide-slider">
                 <div class="slider-labels">
-                    <span class="slider-label-bottom" id="tradeSliderMin">2000</span>
-                    <span class="slider-label-top" id="tradeSliderMax">2025</span>
+                    <span class="slider-label-left" id="tradeSliderMin">2000</span>
+                    <span class="slider-label-right" id="tradeSliderMax">2025</span>
                 </div>
                 <input type="range" class="range-slider" id="tradeSlider" min="2000" max="2025" value="2025" data-chart="trade">
                 <div class="tooltip-slider" id="tradeTooltip"></div>
@@ -286,8 +326,8 @@
                 <h2>Indgående FDI % af BNP (åbenhed)</h2>
                 <div class="slider-container">
                     <div class="slider-labels">
-                        <span class="slider-label-bottom" id="fdiSliderMin">2015</span>
-                        <span class="slider-label-top" id="fdiSliderMax">2025</span>
+                        <span class="slider-label-left" id="fdiSliderMin">2015</span>
+                        <span class="slider-label-right" id="fdiSliderMax">2025</span>
                     </div>
                     <input type="range" class="range-slider" id="fdiSlider" min="2015" max="2025" value="2025" data-chart="fdi">
                     <div class="tooltip-slider" id="fdiTooltip"></div>
@@ -322,8 +362,8 @@
                 <h2>Skadelige handelsrestriktioner</h2>
                 <div class="slider-container">
                     <div class="slider-labels">
-                        <span class="slider-label-bottom" id="restrictionsSliderMin">2009</span>
-                        <span class="slider-label-top" id="restrictionsSliderMax">2025</span>
+                        <span class="slider-label-left" id="restrictionsSliderMin">2009</span>
+                        <span class="slider-label-right" id="restrictionsSliderMax">2025</span>
                     </div>
                     <input type="range" class="range-slider" id="restrictionsSlider" min="2009" max="2025" value="2025" data-chart="restrictions">
                     <div class="tooltip-slider" id="restrictionsTooltip"></div>
@@ -346,8 +386,8 @@
                 <h2>Geopolitisk Risiko Indeks</h2>
                 <div class="slider-container">
                     <div class="slider-labels">
-                        <span class="slider-label-bottom" id="geoSliderMin">2020</span>
-                        <span class="slider-label-top" id="geoSliderMax">2025</span>
+                        <span class="slider-label-left" id="geoSliderMin">2020</span>
+                        <span class="slider-label-right" id="geoSliderMax">2025</span>
                     </div>
                     <input type="range" class="range-slider" id="geoSlider" min="0" max="67" value="67" data-chart="geo">
                     <div class="tooltip-slider" id="geoTooltip"></div>
@@ -370,8 +410,8 @@
                 <h2>Handelspolitisk Usikkerhedsindeks</h2>
                 <div class="slider-container">
                     <div class="slider-labels">
-                        <span class="slider-label-bottom" id="tpuSliderMin">2020</span>
-                        <span class="slider-label-top" id="tpuSliderMax">2025</span>
+                        <span class="slider-label-left" id="tpuSliderMin">2020</span>
+                        <span class="slider-label-right" id="tpuSliderMax">2025</span>
                     </div>
                     <input type="range" class="range-slider" id="tpuSlider" min="0" max="67" value="67" data-chart="tpu">
                     <div class="tooltip-slider" id="tpuTooltip"></div>
