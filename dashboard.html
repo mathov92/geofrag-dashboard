@@ -111,14 +111,14 @@
             border: 1px solid #E8E8E8;
         }
         .metric-value {
-            font-size: 1.4em;
+            font-size: 1.1em;
             font-weight: bold;
             color: #2A6965;
         }
         .trend {
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 3px;
-            font-size: 0.85em;
+            font-size: 0.75em;
             font-weight: bold;
         }
         .trend.up { background: #FFEBE9; color: #EE3A36; }
@@ -264,7 +264,7 @@
             <div class="chart-wrapper">
                 <canvas id="tradeOpennessChart"></canvas>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
                 <div class="metric">
                     <span>Verden</span>
                     <span class="metric-value" id="worldTrade">--</span>
@@ -284,6 +284,16 @@
                     <span>USA</span>
                     <span class="metric-value" id="usaTrade">--</span>
                     <span class="trend up" id="usaTradeTrend">--</span>
+                </div>
+                <div class="metric">
+                    <span>Indien</span>
+                    <span class="metric-value" id="indiaTrade">--</span>
+                    <span class="trend up" id="indiaTradeTrend">--</span>
+                </div>
+                <div class="metric">
+                    <span>Danmark</span>
+                    <span class="metric-value" id="denmarkTrade">--</span>
+                    <span class="trend up" id="denmarkTradeTrend">--</span>
                 </div>
             </div>
             <div class="citation">
@@ -460,7 +470,9 @@
                             World: [50.36, 49.23, 49.27, 50.92, 54.48, 56.52, 58.67, 59.05, 60.68, 52.19, 56.53, 59.66, 59.47, 58.75, 58.14, 55.77, 53.98, 55.70, 57.20, 55.96, 52.06, 56.85, 62.61, 58.37, 56.56],
                             EU: [71.57, 70.73, 68.44, 67.36, 70.40, 73.55, 77.98, 79.80, 80.78, 70.50, 78.27, 83.46, 85.07, 84.62, 85.34, 86.57, 85.61, 88.62, 90.34, 90.43, 83.69, 91.09, 103.63, 95.64, 92.15],
                             China: [39.01, 38.08, 42.19, 51.08, 58.64, 61.36, 63.57, 61.27, 56.71, 44.42, 49.85, 49.95, 47.48, 45.92, 44.07, 38.70, 36.18, 36.95, 36.89, 35.20, 34.04, 36.52, 37.44, 36.11, 37.20],
-                            USA: [25.10, 22.97, 22.29, 22.63, 24.45, 25.64, 26.50, 27.20, 28.40, 24.80, 28.00, 30.50, 30.00, 29.50, 29.00, 27.50, 26.40, 27.00, 27.50, 26.90, 25.00, 27.30, 29.80, 28.20, 27.80]
+                            USA: [25.10, 22.97, 22.29, 22.63, 24.45, 25.64, 26.50, 27.20, 28.40, 24.80, 28.00, 30.50, 30.00, 29.50, 29.00, 27.50, 26.40, 27.00, 27.50, 26.90, 25.00, 27.30, 29.80, 28.20, 27.80],
+                            India: [26.90, 25.99, 29.51, 30.59, 37.50, 42.00, 45.72, 45.69, 53.37, 46.27, 49.26, 55.62, 55.79, 53.84, 48.92, 41.92, 40.08, 40.74, 43.62, 39.91, 37.76, 45.42, 50.08, 44.99, 44.67],
+                            Denmark: [83.04, 83.92, 84.48, 80.76, 82.01, 89.40, 97.43, 100.05, 104.47, 89.39, 94.39, 102.01, 104.36, 103.61, 103.21, 105.13, 101.45, 104.22, 108.81, 111.89, 104.43, 111.41, 131.54, 127.77, 128.64]
                         },
                         currencyData: {
                             labels: ['USD', 'EUR', 'CNY', 'JPY', 'GBP', 'Other'],
@@ -530,7 +542,9 @@
                             World: data.tradeOpenness.World.slice(tradeStartIdx, tradeEnd),
                             EU: data.tradeOpenness.EU.slice(tradeStartIdx, tradeEnd),
                             China: data.tradeOpenness.China.slice(tradeStartIdx, tradeEnd),
-                            USA: data.tradeOpenness.USA.slice(tradeStartIdx, tradeEnd)
+                            USA: data.tradeOpenness.USA.slice(tradeStartIdx, tradeEnd),
+                            India: data.tradeOpenness.India.slice(tradeStartIdx, tradeEnd),
+                            Denmark: data.tradeOpenness.Denmark.slice(tradeStartIdx, tradeEnd)
                         };
                     
                     case 'fdi':
@@ -620,10 +634,24 @@
                             tension: 0.0,
                             borderWidth: 2
                         }, {
+                            label: 'Danmark',
+                            data: data.tradeOpenness.Denmark,
+                            borderColor: '#C60C30',
+                            backgroundColor: 'rgba(198, 12, 48, 0.1)',
+                            tension: 0.0,
+                            borderWidth: 2
+                        }, {
                             label: 'Kina',
                             data: data.tradeOpenness.China,
                             borderColor: '#EE3A36',
                             backgroundColor: 'rgba(238, 58, 54, 0.1)',
+                            tension: 0.0,
+                            borderWidth: 2
+                        }, {
+                            label: 'Indien',
+                            data: data.tradeOpenness.India,
+                            borderColor: '#FF9933',
+                            backgroundColor: 'rgba(255, 153, 51, 0.1)',
                             tension: 0.0,
                             borderWidth: 2
                         }, {
@@ -690,11 +718,21 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 1.5,
                         plugins: {
                             legend: { display: false }
                         },
                         scales: {
-                            y: { beginAtZero: true, max: 70 }
+                            y: { 
+                                beginAtZero: true, 
+                                max: 70,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
                         }
                     }
                 });
@@ -1017,10 +1055,24 @@
                             tension: 0.0,
                             borderWidth: 2
                         }, {
+                            label: 'Danmark',
+                            data: filteredData.Denmark,
+                            borderColor: '#C60C30',
+                            backgroundColor: 'rgba(198, 12, 48, 0.1)',
+                            tension: 0.0,
+                            borderWidth: 2
+                        }, {
                             label: 'Kina',
                             data: filteredData.China,
                             borderColor: '#EE3A36',
                             backgroundColor: 'rgba(238, 58, 54, 0.1)',
+                            tension: 0.0,
+                            borderWidth: 2
+                        }, {
+                            label: 'Indien',
+                            data: filteredData.India,
+                            borderColor: '#FF9933',
+                            backgroundColor: 'rgba(255, 153, 51, 0.1)',
                             tension: 0.0,
                             borderWidth: 2
                         }, {
@@ -1128,6 +1180,10 @@
                     data.China[currentYearIndex].toFixed(1) + '%';
                 document.getElementById('usaTrade').textContent = 
                     data.USA[currentYearIndex].toFixed(1) + '%';
+                document.getElementById('indiaTrade').textContent = 
+                    data.India[currentYearIndex].toFixed(1) + '%';
+                document.getElementById('denmarkTrade').textContent = 
+                    data.Denmark[currentYearIndex].toFixed(1) + '%';
                 
                 if (prevYearIndex >= 0) {
                     const worldChange = ((data.World[currentYearIndex] - data.World[prevYearIndex]) / 
@@ -1138,16 +1194,24 @@
                                         data.China[prevYearIndex] * 100).toFixed(1);
                     const usaChange = ((data.USA[currentYearIndex] - data.USA[prevYearIndex]) / 
                                       data.USA[prevYearIndex] * 100).toFixed(1);
+                    const indiaChange = ((data.India[currentYearIndex] - data.India[prevYearIndex]) / 
+                                        data.India[prevYearIndex] * 100).toFixed(1);
+                    const denmarkChange = ((data.Denmark[currentYearIndex] - data.Denmark[prevYearIndex]) / 
+                                          data.Denmark[prevYearIndex] * 100).toFixed(1);
                     
                     document.getElementById('worldTradeTrend').textContent = (worldChange > 0 ? '+' : '') + worldChange + '%';
                     document.getElementById('euTradeTrend').textContent = (euChange > 0 ? '+' : '') + euChange + '%';
                     document.getElementById('chinaTradeTrend').textContent = (chinaChange > 0 ? '+' : '') + chinaChange + '%';
                     document.getElementById('usaTradeTrend').textContent = (usaChange > 0 ? '+' : '') + usaChange + '%';
+                    document.getElementById('indiaTradeTrend').textContent = (indiaChange > 0 ? '+' : '') + indiaChange + '%';
+                    document.getElementById('denmarkTradeTrend').textContent = (denmarkChange > 0 ? '+' : '') + denmarkChange + '%';
                     
                     document.getElementById('worldTradeTrend').className = worldChange > 0 ? 'trend up' : 'trend down';
                     document.getElementById('euTradeTrend').className = euChange > 0 ? 'trend up' : 'trend down';
                     document.getElementById('chinaTradeTrend').className = chinaChange > 0 ? 'trend up' : 'trend down';
                     document.getElementById('usaTradeTrend').className = usaChange > 0 ? 'trend up' : 'trend down';
+                    document.getElementById('indiaTradeTrend').className = indiaChange > 0 ? 'trend up' : 'trend down';
+                    document.getElementById('denmarkTradeTrend').className = denmarkChange > 0 ? 'trend up' : 'trend down';
                 }
             }
         }
