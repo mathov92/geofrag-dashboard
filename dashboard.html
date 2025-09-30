@@ -138,119 +138,98 @@
             letter-spacing: 0.01em;
         }
         
-        /* Slider Styles */
+        /* Dual Range Slider Styles */
         .slider-container {
-            margin: 20px auto;
-            width: 80%;
-            max-width: 400px;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 8px 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px auto 30px;
+            width: 90%;
+            max-width: 500px;
+            padding: 10px 20px;
+        }
+        
+        .slider-wrapper {
             position: relative;
+            height: 40px;
+            margin: 20px 0;
         }
         
-        .slider-container.wide-slider {
-            margin: 20px auto;
-        }
-        
-        .range-slider {
+        .slider-track {
+            position: absolute;
             width: 100%;
-            height: 24px;
-            margin: 0 10px;
+            height: 5px;
+            background: #E8E8E8;
+            border-radius: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .slider-range {
+            position: absolute;
+            height: 5px;
+            background: #2A6965;
+            border-radius: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .slider-left, .slider-right {
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background: transparent;
+            pointer-events: none;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-appearance: none;
+        }
+        
+        .slider-left::-webkit-slider-thumb,
+        .slider-right::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2A6965;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: all;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider-left::-moz-range-thumb,
+        .slider-right::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2A6965;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: all;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .slider-labels {
             display: flex;
             justify-content: space-between;
-            width: 100%;
-            font-size: 0.7em;
+            margin-top: 10px;
+            font-size: 0.8em;
             color: #5A1C26;
+        }
+        
+        .slider-value-display {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #2A6965;
             font-weight: 500;
-            align-items: center;
-            pointer-events: none;
-            position: absolute;
-            padding: 0 15px;
-        }
-        
-        .slider-label-left {
-            position: relative;
-        }
-        
-        .slider-label-right {
-            position: relative;
-        }
-        
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-            cursor: pointer;
-        }
-        
-        input[type="range"]::-webkit-slider-track {
-            background: #E8E8E8;
-            height: 4px;
-            border-radius: 2px;
-        }
-        
-        input[type="range"]::-moz-range-track {
-            background: #E8E8E8;
-            height: 4px;
-            border-radius: 2px;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            background: #2A6965;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            cursor: grab;
-            margin-top: -6px;
-        }
-        
-        input[type="range"]::-moz-range-thumb {
-            background: #2A6965;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            cursor: grab;
-            border: none;
-        }
-        
-        input[type="range"]:active::-webkit-slider-thumb {
-            cursor: grabbing;
-        }
-        
-        input[type="range"]:active::-moz-range-thumb {
-            cursor: grabbing;
         }
         
         .chart-wrapper {
             padding-bottom: 20px;
             position: relative;
-        }
-        
-        .tooltip-slider {
-            position: absolute;
-            background: #2A6965;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            z-index: 1000;
-        }
-        
-        .tooltip-slider.show {
-            opacity: 1;
         }
     </style>
 </head>
@@ -269,13 +248,18 @@
         <!-- Trade Openness Chart - Full Width -->
         <div class="wide-card">
             <h2>Handelsåbenhed (Handel/BNP %)</h2>
-            <div class="slider-container wide-slider">
-                <div class="slider-labels">
-                    <span class="slider-label-left" id="tradeSliderMin">2000</span>
-                    <span class="slider-label-right" id="tradeSliderMax">2025</span>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slider-track"></div>
+                    <div class="slider-range" id="tradeRange"></div>
+                    <input type="range" class="slider-left" id="tradeMin" min="2000" max="2024" value="2000">
+                    <input type="range" class="slider-right" id="tradeMax" min="2000" max="2024" value="2024">
                 </div>
-                <input type="range" class="range-slider" id="tradeSlider" min="2000" max="2025" value="2025" data-chart="trade">
-                <div class="tooltip-slider" id="tradeTooltip"></div>
+                <div class="slider-labels">
+                    <span>2000</span>
+                    <span>2024</span>
+                </div>
+                <div class="slider-value-display" id="tradeDisplay">2000 - 2024</div>
             </div>
             <div class="chart-wrapper">
                 <canvas id="tradeOpennessChart"></canvas>
@@ -325,12 +309,17 @@
             <div class="card">
                 <h2>Indgående FDI % af BNP (åbenhed)</h2>
                 <div class="slider-container">
-                    <div class="slider-labels">
-                        <span class="slider-label-left" id="fdiSliderMin">2015</span>
-                        <span class="slider-label-right" id="fdiSliderMax">2025</span>
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <div class="slider-range" id="fdiRange"></div>
+                        <input type="range" class="slider-left" id="fdiMin" min="2015" max="2025" value="2015">
+                        <input type="range" class="slider-right" id="fdiMax" min="2015" max="2025" value="2025">
                     </div>
-                    <input type="range" class="range-slider" id="fdiSlider" min="2015" max="2025" value="2025" data-chart="fdi">
-                    <div class="tooltip-slider" id="fdiTooltip"></div>
+                    <div class="slider-labels">
+                        <span>2015</span>
+                        <span>2025</span>
+                    </div>
+                    <div class="slider-value-display" id="fdiDisplay">2015 - 2025</div>
                 </div>
                 <div class="chart-wrapper">
                     <canvas id="fdiGdpChart"></canvas>
@@ -361,12 +350,17 @@
             <div class="card">
                 <h2>Skadelige handelsrestriktioner</h2>
                 <div class="slider-container">
-                    <div class="slider-labels">
-                        <span class="slider-label-left" id="restrictionsSliderMin">2009</span>
-                        <span class="slider-label-right" id="restrictionsSliderMax">2025</span>
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <div class="slider-range" id="restrictionsRange"></div>
+                        <input type="range" class="slider-left" id="restrictionsMin" min="2009" max="2025" value="2009">
+                        <input type="range" class="slider-right" id="restrictionsMax" min="2009" max="2025" value="2025">
                     </div>
-                    <input type="range" class="range-slider" id="restrictionsSlider" min="2009" max="2025" value="2025" data-chart="restrictions">
-                    <div class="tooltip-slider" id="restrictionsTooltip"></div>
+                    <div class="slider-labels">
+                        <span>2009</span>
+                        <span>2025</span>
+                    </div>
+                    <div class="slider-value-display" id="restrictionsDisplay">2009 - 2025</div>
                 </div>
                 <div class="chart-wrapper">
                     <canvas id="restrictionsChart"></canvas>
@@ -385,12 +379,17 @@
             <div class="card">
                 <h2>Geopolitisk Risiko Indeks</h2>
                 <div class="slider-container">
-                    <div class="slider-labels">
-                        <span class="slider-label-left" id="geoSliderMin">2020</span>
-                        <span class="slider-label-right" id="geoSliderMax">2025</span>
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <div class="slider-range" id="geoRange"></div>
+                        <input type="range" class="slider-left" id="geoMin" min="0" max="67" value="0">
+                        <input type="range" class="slider-right" id="geoMax" min="0" max="67" value="67">
                     </div>
-                    <input type="range" class="range-slider" id="geoSlider" min="0" max="67" value="67" data-chart="geo">
-                    <div class="tooltip-slider" id="geoTooltip"></div>
+                    <div class="slider-labels">
+                        <span>Jan-20</span>
+                        <span>Aug-25</span>
+                    </div>
+                    <div class="slider-value-display" id="geoDisplay">Jan-20 - Aug-25</div>
                 </div>
                 <div class="chart-wrapper">
                     <canvas id="geoRiskChart"></canvas>
@@ -409,12 +408,17 @@
             <div class="card">
                 <h2>Handelspolitisk Usikkerhedsindeks</h2>
                 <div class="slider-container">
-                    <div class="slider-labels">
-                        <span class="slider-label-left" id="tpuSliderMin">2020</span>
-                        <span class="slider-label-right" id="tpuSliderMax">2025</span>
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <div class="slider-range" id="tpuRange"></div>
+                        <input type="range" class="slider-left" id="tpuMin" min="0" max="67" value="0">
+                        <input type="range" class="slider-right" id="tpuMax" min="0" max="67" value="67">
                     </div>
-                    <input type="range" class="range-slider" id="tpuSlider" min="0" max="67" value="67" data-chart="tpu">
-                    <div class="tooltip-slider" id="tpuTooltip"></div>
+                    <div class="slider-labels">
+                        <span>Jan-20</span>
+                        <span>Aug-25</span>
+                    </div>
+                    <div class="slider-value-display" id="tpuDisplay">Jan-20 - Aug-25</div>
                 </div>
                 <div class="chart-wrapper">
                     <canvas id="tpuChart"></canvas>
@@ -510,50 +514,62 @@
                 }
             }
 
-            filterDataByEndYear(dataType, endYear) {
+            filterDataByYearRange(dataType, startYear, endYear) {
                 const data = JSON.parse(JSON.stringify(this.originalData));
                 
                 switch(dataType) {
                     case 'trade':
+                        const tradeStartIdx = data.tradeOpenness.years.findIndex(y => y >= startYear);
                         const tradeEndIdx = data.tradeOpenness.years.findIndex(y => y > endYear);
                         const tradeEnd = tradeEndIdx === -1 ? data.tradeOpenness.years.length : tradeEndIdx;
+                        
+                        if (tradeStartIdx === -1) return null;
+                        
                         return {
-                            years: data.tradeOpenness.years.slice(0, tradeEnd),
-                            World: data.tradeOpenness.World.slice(0, tradeEnd),
-                            EU: data.tradeOpenness.EU.slice(0, tradeEnd),
-                            China: data.tradeOpenness.China.slice(0, tradeEnd),
-                            USA: data.tradeOpenness.USA.slice(0, tradeEnd)
+                            years: data.tradeOpenness.years.slice(tradeStartIdx, tradeEnd),
+                            World: data.tradeOpenness.World.slice(tradeStartIdx, tradeEnd),
+                            EU: data.tradeOpenness.EU.slice(tradeStartIdx, tradeEnd),
+                            China: data.tradeOpenness.China.slice(tradeStartIdx, tradeEnd),
+                            USA: data.tradeOpenness.USA.slice(tradeStartIdx, tradeEnd)
                         };
                     
                     case 'fdi':
+                        const fdiStartIdx = data.fdiGdpData.years.findIndex(y => y >= startYear);
                         const fdiEndIdx = data.fdiGdpData.years.findIndex(y => y > endYear);
                         const fdiEnd = fdiEndIdx === -1 ? data.fdiGdpData.years.length : fdiEndIdx;
+                        
+                        if (fdiStartIdx === -1) return null;
+                        
                         return {
-                            years: data.fdiGdpData.years.slice(0, fdiEnd),
-                            USA: data.fdiGdpData.USA.slice(0, fdiEnd),
-                            China: data.fdiGdpData.China.slice(0, fdiEnd),
-                            EU: data.fdiGdpData.EU.slice(0, fdiEnd)
+                            years: data.fdiGdpData.years.slice(fdiStartIdx, fdiEnd),
+                            USA: data.fdiGdpData.USA.slice(fdiStartIdx, fdiEnd),
+                            China: data.fdiGdpData.China.slice(fdiStartIdx, fdiEnd),
+                            EU: data.fdiGdpData.EU.slice(fdiStartIdx, fdiEnd)
                         };
                     
                     case 'restrictions':
+                        const resStartIdx = data.tradeRestrictions.years.findIndex(y => y >= startYear);
                         const resEndIdx = data.tradeRestrictions.years.findIndex(y => y > endYear);
                         const resEnd = resEndIdx === -1 ? data.tradeRestrictions.years.length : resEndIdx;
+                        
+                        if (resStartIdx === -1) return null;
+                        
                         return {
-                            years: data.tradeRestrictions.years.slice(0, resEnd),
-                            G7: data.tradeRestrictions.G7.slice(0, resEnd),
-                            BRICS: data.tradeRestrictions.BRICS.slice(0, resEnd)
+                            years: data.tradeRestrictions.years.slice(resStartIdx, resEnd),
+                            G7: data.tradeRestrictions.G7.slice(resStartIdx, resEnd),
+                            BRICS: data.tradeRestrictions.BRICS.slice(resStartIdx, resEnd)
                         };
                     
                     case 'geo':
                         return {
-                            dates: data.geoRiskIndex.dates.slice(0, endYear + 1),
-                            values: data.geoRiskIndex.values.slice(0, endYear + 1)
+                            dates: data.geoRiskIndex.dates.slice(startYear, endYear + 1),
+                            values: data.geoRiskIndex.values.slice(startYear, endYear + 1)
                         };
                     
                     case 'tpu':
                         return {
-                            dates: data.tpuIndex.dates.slice(0, endYear + 1),
-                            values: data.tpuIndex.values.slice(0, endYear + 1)
+                            dates: data.tpuIndex.dates.slice(startYear, endYear + 1),
+                            values: data.tpuIndex.values.slice(startYear, endYear + 1)
                         };
                     
                     default:
@@ -931,15 +947,59 @@
         let dataManager;
         let chartManager;
 
-        // Update individual chart based on slider
-        function updateChartBySlider(chartType, value) {
-            let filteredData;
+        // Dual Range Slider Setup
+        function setupDualRangeSlider(prefix, min, max, chartType, isMonthly = false) {
+            const leftSlider = document.getElementById(prefix + 'Min');
+            const rightSlider = document.getElementById(prefix + 'Max');
+            const rangeBar = document.getElementById(prefix + 'Range');
+            const displayElement = document.getElementById(prefix + 'Display');
+            
+            function updateSliders() {
+                let minVal = parseInt(leftSlider.value);
+                let maxVal = parseInt(rightSlider.value);
+                
+                // Prevent crossing
+                if (minVal > maxVal - 1) {
+                    leftSlider.value = maxVal - 1;
+                    minVal = maxVal - 1;
+                }
+                if (maxVal < minVal + 1) {
+                    rightSlider.value = minVal + 1;
+                    maxVal = minVal + 1;
+                }
+                
+                // Update range bar position
+                const minPercent = ((minVal - min) / (max - min)) * 100;
+                const maxPercent = ((maxVal - min) / (max - min)) * 100;
+                rangeBar.style.left = minPercent + '%';
+                rangeBar.style.width = (maxPercent - minPercent) + '%';
+                
+                // Update display
+                if (isMonthly) {
+                    const dates = dataManager.originalData[chartType === 'geo' ? 'geoRiskIndex' : 'tpuIndex'].dates;
+                    displayElement.textContent = `${dates[minVal]} - ${dates[maxVal]}`;
+                } else {
+                    displayElement.textContent = `${minVal} - ${maxVal}`;
+                }
+                
+                // Update chart
+                updateChartByRange(chartType, minVal, maxVal);
+            }
+            
+            leftSlider.addEventListener('input', updateSliders);
+            rightSlider.addEventListener('input', updateSliders);
+            
+            // Initial update
+            updateSliders();
+        }
+
+        // Update chart based on range selection
+        function updateChartByRange(chartType, startValue, endValue) {
+            const filteredData = dataManager.filterDataByYearRange(chartType, startValue, endValue);
+            if (!filteredData) return;
             
             switch(chartType) {
                 case 'trade':
-                    const endYear = parseInt(value);
-                    filteredData = dataManager.filterDataByEndYear('trade', endYear);
-                    
                     chartManager.updateChart('tradeOpenness', {
                         labels: filteredData.years,
                         datasets: [{
@@ -972,15 +1032,10 @@
                             borderWidth: 2
                         }]
                     });
-                    
-                    // Update metrics
                     updateTradeMetrics(filteredData);
                     break;
                 
                 case 'fdi':
-                    const fdiYear = parseInt(value);
-                    filteredData = dataManager.filterDataByEndYear('fdi', fdiYear);
-                    
                     chartManager.updateChart('fdiGdp', {
                         labels: filteredData.years,
                         datasets: [{
@@ -1003,14 +1058,10 @@
                             tension: 0.4
                         }]
                     });
-                    
                     updateFdiMetrics(filteredData);
                     break;
                 
                 case 'restrictions':
-                    const resYear = parseInt(value);
-                    filteredData = dataManager.filterDataByEndYear('restrictions', resYear);
-                    
                     chartManager.updateChart('restrictions', {
                         labels: filteredData.years,
                         datasets: [{
@@ -1025,14 +1076,10 @@
                             stack: 'Stack 0',
                         }]
                     });
-                    
                     updateRestrictionsMetrics(filteredData);
                     break;
                 
                 case 'geo':
-                    const geoIndex = parseInt(value);
-                    filteredData = dataManager.filterDataByEndYear('geo', geoIndex);
-                    
                     chartManager.updateChart('geoRisk', {
                         labels: filteredData.dates,
                         datasets: [{
@@ -1046,14 +1093,10 @@
                             pointHoverRadius: 5
                         }]
                     });
-                    
                     updateGeoMetrics(filteredData);
                     break;
                 
                 case 'tpu':
-                    const tpuIndex = parseInt(value);
-                    filteredData = dataManager.filterDataByEndYear('tpu', tpuIndex);
-                    
                     chartManager.updateChart('tpu', {
                         labels: filteredData.dates,
                         datasets: [{
@@ -1067,7 +1110,6 @@
                             pointHoverRadius: 5
                         }]
                     });
-                    
                     updateTpuMetrics(filteredData);
                     break;
             }
@@ -1215,8 +1257,12 @@
             chartManager.initCharts(staticData);
             updateAllMetrics(staticData);
 
-            // Initialize sliders
-            initializeSliders();
+            // Setup dual range sliders
+            setupDualRangeSlider('trade', 2000, 2024, 'trade');
+            setupDualRangeSlider('fdi', 2015, 2025, 'fdi');
+            setupDualRangeSlider('restrictions', 2009, 2025, 'restrictions');
+            setupDualRangeSlider('geo', 0, 67, 'geo', true);
+            setupDualRangeSlider('tpu', 0, 67, 'tpu', true);
 
             // Try to fetch live data
             const liveSuccess = await dataManager.fetchLiveData();
@@ -1239,94 +1285,6 @@
                         new Date().toLocaleTimeString('da-DK');
                 }
             }, config.updateInterval);
-        }
-
-        // Initialize sliders
-        function initializeSliders() {
-            // Trade slider
-            const tradeSlider = document.getElementById('tradeSlider');
-            tradeSlider.addEventListener('input', function() {
-                updateChartBySlider('trade', this.value);
-                showTooltip('tradeTooltip', this.value, this);
-            });
-            tradeSlider.addEventListener('mouseenter', function() {
-                showTooltip('tradeTooltip', this.value, this);
-            });
-            tradeSlider.addEventListener('mouseleave', function() {
-                hideTooltip('tradeTooltip');
-            });
-            
-            // FDI slider
-            const fdiSlider = document.getElementById('fdiSlider');
-            fdiSlider.addEventListener('input', function() {
-                updateChartBySlider('fdi', this.value);
-                showTooltip('fdiTooltip', this.value, this);
-            });
-            fdiSlider.addEventListener('mouseenter', function() {
-                showTooltip('fdiTooltip', this.value, this);
-            });
-            fdiSlider.addEventListener('mouseleave', function() {
-                hideTooltip('fdiTooltip');
-            });
-            
-            // Restrictions slider
-            const restrictionsSlider = document.getElementById('restrictionsSlider');
-            restrictionsSlider.addEventListener('input', function() {
-                updateChartBySlider('restrictions', this.value);
-                showTooltip('restrictionsTooltip', this.value, this);
-            });
-            restrictionsSlider.addEventListener('mouseenter', function() {
-                showTooltip('restrictionsTooltip', this.value, this);
-            });
-            restrictionsSlider.addEventListener('mouseleave', function() {
-                hideTooltip('restrictionsTooltip');
-            });
-            
-            // Geo Risk slider
-            const geoSlider = document.getElementById('geoSlider');
-            geoSlider.addEventListener('input', function() {
-                updateChartBySlider('geo', this.value);
-                const date = dataManager.originalData.geoRiskIndex.dates[this.value] || 'N/A';
-                showTooltip('geoTooltip', date, this);
-            });
-            geoSlider.addEventListener('mouseenter', function() {
-                const date = dataManager.originalData.geoRiskIndex.dates[this.value] || 'N/A';
-                showTooltip('geoTooltip', date, this);
-            });
-            geoSlider.addEventListener('mouseleave', function() {
-                hideTooltip('geoTooltip');
-            });
-            
-            // TPU slider
-            const tpuSlider = document.getElementById('tpuSlider');
-            tpuSlider.addEventListener('input', function() {
-                updateChartBySlider('tpu', this.value);
-                const date = dataManager.originalData.tpuIndex.dates[this.value] || 'N/A';
-                showTooltip('tpuTooltip', date, this);
-            });
-            tpuSlider.addEventListener('mouseenter', function() {
-                const date = dataManager.originalData.tpuIndex.dates[this.value] || 'N/A';
-                showTooltip('tpuTooltip', date, this);
-            });
-            tpuSlider.addEventListener('mouseleave', function() {
-                hideTooltip('tpuTooltip');
-            });
-        }
-
-        function showTooltip(tooltipId, value, slider) {
-            const tooltip = document.getElementById(tooltipId);
-            const rect = slider.getBoundingClientRect();
-            const percent = (slider.value - slider.min) / (slider.max - slider.min);
-            
-            tooltip.textContent = value;
-            tooltip.style.left = rect.left + (rect.width * percent) - (tooltip.offsetWidth / 2) + 'px';
-            tooltip.style.top = rect.top - 30 + 'px';
-            tooltip.classList.add('show');
-        }
-
-        function hideTooltip(tooltipId) {
-            const tooltip = document.getElementById(tooltipId);
-            tooltip.classList.remove('show');
         }
 
         // Start the dashboard
