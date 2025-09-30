@@ -140,106 +140,59 @@
         
         /* Slider Styles */
         .slider-container {
-            position: absolute;
-            right: 10px;
-            top: 60px;
-            height: 200px;
-            width: 40px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
-            padding: 10px 5px;
+            padding: 8px 15px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .slider-container.wide-slider {
-            top: 80px;
+            margin: 20px auto;
         }
         
         .range-slider {
-            width: 180px;
+            width: 100%;
             height: 24px;
+            margin: 0 10px;
+            /* Remove these lines:
             transform: rotate(-90deg);
             transform-origin: center;
             position: absolute;
-            top: 90px;
+            top: 90px; */
         }
         
         .slider-labels {
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
-            height: 100%;
+            width: 100%;
             font-size: 0.7em;
             color: #5A1C26;
             font-weight: 500;
             align-items: center;
             pointer-events: none;
             position: absolute;
-            width: 30px;
+            padding: 0 15px;
         }
         
         .slider-label-top {
-            position: absolute;
-            top: 5px;
+            /* This will now be the right label */
+            position: relative;
         }
         
         .slider-label-bottom {
-            position: absolute;
-            bottom: 5px;
-        }
-        
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-            cursor: pointer;
-        }
-        
-        input[type="range"]::-webkit-slider-track {
-            background: #E8E8E8;
-            height: 4px;
-            border-radius: 2px;
-        }
-        
-        input[type="range"]::-moz-range-track {
-            background: #E8E8E8;
-            height: 4px;
-            border-radius: 2px;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            background: #2A6965;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            cursor: grab;
-            margin-top: -6px;
-        }
-        
-        input[type="range"]::-moz-range-thumb {
-            background: #2A6965;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            cursor: grab;
-            border: none;
-        }
-        
-        input[type="range"]:active::-webkit-slider-thumb {
-            cursor: grabbing;
-        }
-        
-        input[type="range"]:active::-moz-range-thumb {
-            cursor: grabbing;
+            /* This will now be the left label */
+            position: relative;
         }
         
         .chart-wrapper {
-            padding-right: 50px;
+            padding-bottom: 20px;
+            /* Remove: padding-right: 50px; */
         }
         
         .tooltip-slider {
