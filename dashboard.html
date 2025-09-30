@@ -141,16 +141,15 @@
         /* Slider Styles */
         .slider-container {
             position: absolute;
-            right: 10px;
-            top: 60px;
-            height: 200px;
-            width: 40px;
+            left: 24px;
+            bottom: 10px;
+            height: 40px;
+            width: 200px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
-            padding: 10px 5px;
+            padding: 5px 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
@@ -161,34 +160,31 @@
         .range-slider {
             width: 180px;
             height: 24px;
-            transform: rotate(-90deg);
-            transform-origin: center;
             position: absolute;
             top: 90px;
         }
         
         .slider-labels {
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
-            height: 100%;
+            width: 100%;
             font-size: 0.7em;
             color: #5A1C26;
             font-weight: 500;
             align-items: center;
             pointer-events: none;
             position: absolute;
-            width: 30px;
+            height: 30px;
         }
         
         .slider-label-top {
             position: absolute;
-            top: 5px;
+            right: 5px;
         }
         
         .slider-label-bottom {
             position: absolute;
-            bottom: 5px;
+            left: 5px;
         }
         
         input[type="range"] {
@@ -239,7 +235,7 @@
         }
         
         .chart-wrapper {
-            padding-right: 50px;
+            padding-bottom: 60px;  /* Changed from padding-right to padding-bottom */
         }
         
         .tooltip-slider {
