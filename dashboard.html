@@ -6,8 +6,6 @@
     <title>Geoøkonomisk Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -27,109 +25,6 @@
             font-size: 2.8em;
             font-weight: normal;
             letter-spacing: 0.02em;
-        }
-        .control-bar {
-            background: white;
-            border-radius: 4px;
-            padding: 16px 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.15);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .filter-controls {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .filter-group label {
-            color: #5A1C26;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-        .filter-group select, .filter-group input {
-            padding: 6px 12px;
-            border: 1px solid #E8E8E8;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 0.9em;
-            background: white;
-            color: #4D4D4D;
-        }
-        .filter-group select:hover, .filter-group input:hover {
-            border-color: #2A6965;
-        }
-        .filter-group select:focus, .filter-group input:focus {
-            outline: none;
-            border-color: #2A6965;
-            box-shadow: 0 0 0 2px rgba(42, 105, 101, 0.1);
-        }
-        .apply-filter-btn {
-            background: #2A6965;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .apply-filter-btn:hover {
-            background: #1F5651;
-            transform: translateY(-1px);
-        }
-        .reset-filter-btn {
-            background: #F5F5F5;
-            color: #4D4D4D;
-            border: 1px solid #E8E8E8;
-            padding: 8px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .reset-filter-btn:hover {
-            background: #E8E8E8;
-        }
-        .export-section {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        .export-btn {
-            background: white;
-            color: #6D6D6D;
-            border: 1px solid #E8E8E8;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.85em;
-            transition: all 0.3s ease;
-        }
-        .export-btn:hover {
-            border-color: #2A6965;
-            color: #2A6965;
-        }
-        .export-btn:active {
-            transform: translateY(0);
-        }
-        .export-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
         .status-bar {
             background: #EE3A36;
@@ -166,6 +61,7 @@
             transition: transform 0.3s ease;
             border: 1px solid #E8E8E8;
             margin-bottom: 20px;
+            position: relative;
         }
         .wide-card:hover { 
             transform: translateY(-2px);
@@ -191,6 +87,7 @@
             box-shadow: 0 2px 8px rgba(77, 77, 77, 0.15);
             transition: transform 0.3s ease;
             border: 1px solid #E8E8E8;
+            position: relative;
         }
         .card:hover { 
             transform: translateY(-2px);
@@ -240,17 +137,127 @@
             line-height: 1.5;
             letter-spacing: 0.01em;
         }
-        .filter-info {
-            background: #F5F5F5;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            color: #5A1C26;
-            margin-bottom: 12px;
-            display: none;
+        
+        /* Slider Styles */
+        .slider-container {
+            position: absolute;
+            right: 10px;
+            top: 60px;
+            height: 200px;
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 10px 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .filter-info.active {
-            display: block;
+        
+        .slider-container.wide-slider {
+            top: 80px;
+        }
+        
+        .range-slider {
+            width: 180px;
+            height: 24px;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            position: absolute;
+            top: 90px;
+        }
+        
+        .slider-labels {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            font-size: 0.7em;
+            color: #5A1C26;
+            font-weight: 500;
+            align-items: center;
+            pointer-events: none;
+            position: absolute;
+            width: 30px;
+        }
+        
+        .slider-label-top {
+            position: absolute;
+            top: 5px;
+        }
+        
+        .slider-label-bottom {
+            position: absolute;
+            bottom: 5px;
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-track {
+            background: #E8E8E8;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        input[type="range"]::-moz-range-track {
+            background: #E8E8E8;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #2A6965;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            cursor: grab;
+            margin-top: -6px;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            background: #2A6965;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            cursor: grab;
+            border: none;
+        }
+        
+        input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
+        }
+        
+        input[type="range"]:active::-moz-range-thumb {
+            cursor: grabbing;
+        }
+        
+        .chart-wrapper {
+            padding-right: 50px;
+        }
+        
+        .tooltip-slider {
+            position: absolute;
+            background: #2A6965;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        
+        .tooltip-slider.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -258,53 +265,6 @@
     <div class="dashboard">
         <h1>Geoøkonomisk Dashboard</h1>
         
-        <div class="control-bar">
-            <div class="filter-controls">
-                <div class="filter-group">
-                    <label for="startYear">Fra år:</label>
-                    <select id="startYear">
-                        <option value="2000">2000</option>
-                        <option value="2005">2005</option>
-                        <option value="2010">2010</option>
-                        <option value="2015" selected>2015</option>
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="endYear">Til år:</label>
-                    <select id="endYear">
-                        <option value="2015">2015</option>
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025" selected>2025</option>
-                    </select>
-                </div>
-                <button class="apply-filter-btn" onclick="applyFilters()">Anvend filter</button>
-                <button class="reset-filter-btn" onclick="resetFilters()">Nulstil</button>
-            </div>
-            <div class="export-section">
-                <button class="export-btn" id="exportBtn" onclick="exportToPDF()">
-                    PDF ↓
-                </button>
-            </div>
-        </div>
-
         <div class="status-bar">
             <div class="status">
                 <span id="dataStatus">Loading data...</span>
@@ -313,12 +273,20 @@
             <div class="status">Sidste opdatering: <span id="lastUpdate">--</span></div>
         </div>
 
-        <div class="filter-info" id="filterInfo"></div>
-
         <!-- Trade Openness Chart - Full Width -->
         <div class="wide-card">
             <h2>Handelsåbenhed (Handel/BNP %)</h2>
-            <canvas id="tradeOpennessChart"></canvas>
+            <div class="slider-container wide-slider">
+                <div class="slider-labels">
+                    <span class="slider-label-top" id="tradeSliderMax">2025</span>
+                    <span class="slider-label-bottom" id="tradeSliderMin">2000</span>
+                </div>
+                <input type="range" class="range-slider" id="tradeSlider" min="2000" max="2025" value="2025" data-chart="trade">
+                <div class="tooltip-slider" id="tradeTooltip"></div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="tradeOpennessChart"></canvas>
+            </div>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;">
                 <div class="metric">
                     <span>Verden</span>
@@ -347,7 +315,7 @@
         </div>
 
         <div class="grid">
-            <!-- Currency Usage Trends -->
+            <!-- Currency Usage Trends - NO SLIDER -->
             <div class="card">
                 <h2>Reservevaluta Status</h2>
                 <canvas id="currencyChart"></canvas>
@@ -363,7 +331,17 @@
             <!-- FDI as % of GDP Comparison -->
             <div class="card">
                 <h2>Indgående FDI % af BNP (åbenhed)</h2>
-                <canvas id="fdiGdpChart"></canvas>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span class="slider-label-top" id="fdiSliderMax">2025</span>
+                        <span class="slider-label-bottom" id="fdiSliderMin">2015</span>
+                    </div>
+                    <input type="range" class="range-slider" id="fdiSlider" min="2015" max="2025" value="2025" data-chart="fdi">
+                    <div class="tooltip-slider" id="fdiTooltip"></div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="fdiGdpChart"></canvas>
+                </div>
                 <div class="grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 15px;">
                     <div class="metric">
                         <span>USA</span>
@@ -389,8 +367,17 @@
             <!-- Harmful Trade Restrictions -->
             <div class="card">
                 <h2>Skadelige handelsrestriktioner</h2>
-                <div class="filter-info" id="restrictionsFilterInfo"></div>
-                <canvas id="restrictionsChart"></canvas>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span class="slider-label-top" id="restrictionsSliderMax">2025</span>
+                        <span class="slider-label-bottom" id="restrictionsSliderMin">2009</span>
+                    </div>
+                    <input type="range" class="range-slider" id="restrictionsSlider" min="2009" max="2025" value="2025" data-chart="restrictions">
+                    <div class="tooltip-slider" id="restrictionsTooltip"></div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="restrictionsChart"></canvas>
+                </div>
                 <div class="metric">
                     <span>Samlede restriktioner</span>
                     <span class="metric-value" id="totalRestrictions">--</span>
@@ -404,8 +391,17 @@
             <!-- Geopolitical Risk Index -->
             <div class="card">
                 <h2>Geopolitisk Risiko Indeks</h2>
-                <div class="filter-info" id="geoFilterInfo"></div>
-                <canvas id="geoRiskChart"></canvas>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span class="slider-label-top" id="geoSliderMax">2025</span>
+                        <span class="slider-label-bottom" id="geoSliderMin">2020</span>
+                    </div>
+                    <input type="range" class="range-slider" id="geoSlider" min="0" max="67" value="67" data-chart="geo">
+                    <div class="tooltip-slider" id="geoTooltip"></div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="geoRiskChart"></canvas>
+                </div>
                 <div class="metric">
                     <span>Nuværende risikoniveau</span>
                     <span class="metric-value" id="currentRisk">--</span>
@@ -419,8 +415,17 @@
             <!-- Trade Policy Uncertainty Index -->
             <div class="card">
                 <h2>Handelspolitisk Usikkerhedsindeks</h2>
-                <div class="filter-info" id="tpuFilterInfo"></div>
-                <canvas id="tpuChart"></canvas>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span class="slider-label-top" id="tpuSliderMax">2025</span>
+                        <span class="slider-label-bottom" id="tpuSliderMin">2020</span>
+                    </div>
+                    <input type="range" class="range-slider" id="tpuSlider" min="0" max="67" value="67" data-chart="tpu">
+                    <div class="tooltip-slider" id="tpuTooltip"></div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="tpuChart"></canvas>
+                </div>
                 <div class="metric">
                     <span>Nuværende TPU niveau</span>
                     <span class="metric-value" id="currentTPU">--</span>
@@ -448,7 +453,6 @@
                 this.cache = {};
                 this.lastUpdate = null;
                 this.originalData = null;
-                this.filteredData = null;
             }
 
             async loadStaticData() {
@@ -506,7 +510,6 @@
                         }
                     };
                     this.originalData = JSON.parse(JSON.stringify(data));
-                    this.filteredData = JSON.parse(JSON.stringify(data));
                     return data;
                 } catch (error) {
                     console.error('Failed to load static data:', error);
@@ -514,79 +517,55 @@
                 }
             }
 
-            filterDataByYearRange(startYear, endYear) {
-                const filtered = JSON.parse(JSON.stringify(this.originalData));
+            filterDataByEndYear(dataType, endYear) {
+                const data = JSON.parse(JSON.stringify(this.originalData));
                 
-                // Filter Trade Openness data
-                const toStartIdx = filtered.tradeOpenness.years.findIndex(y => y >= startYear);
-                const toEndIdx = filtered.tradeOpenness.years.findIndex(y => y > endYear);
-                const toEnd = toEndIdx === -1 ? filtered.tradeOpenness.years.length : toEndIdx;
-                
-                if (toStartIdx !== -1) {
-                    filtered.tradeOpenness.years = filtered.tradeOpenness.years.slice(toStartIdx, toEnd);
-                    filtered.tradeOpenness.World = filtered.tradeOpenness.World.slice(toStartIdx, toEnd);
-                    filtered.tradeOpenness.EU = filtered.tradeOpenness.EU.slice(toStartIdx, toEnd);
-                    filtered.tradeOpenness.China = filtered.tradeOpenness.China.slice(toStartIdx, toEnd);
-                    filtered.tradeOpenness.USA = filtered.tradeOpenness.USA.slice(toStartIdx, toEnd);
+                switch(dataType) {
+                    case 'trade':
+                        const tradeEndIdx = data.tradeOpenness.years.findIndex(y => y > endYear);
+                        const tradeEnd = tradeEndIdx === -1 ? data.tradeOpenness.years.length : tradeEndIdx;
+                        return {
+                            years: data.tradeOpenness.years.slice(0, tradeEnd),
+                            World: data.tradeOpenness.World.slice(0, tradeEnd),
+                            EU: data.tradeOpenness.EU.slice(0, tradeEnd),
+                            China: data.tradeOpenness.China.slice(0, tradeEnd),
+                            USA: data.tradeOpenness.USA.slice(0, tradeEnd)
+                        };
+                    
+                    case 'fdi':
+                        const fdiEndIdx = data.fdiGdpData.years.findIndex(y => y > endYear);
+                        const fdiEnd = fdiEndIdx === -1 ? data.fdiGdpData.years.length : fdiEndIdx;
+                        return {
+                            years: data.fdiGdpData.years.slice(0, fdiEnd),
+                            USA: data.fdiGdpData.USA.slice(0, fdiEnd),
+                            China: data.fdiGdpData.China.slice(0, fdiEnd),
+                            EU: data.fdiGdpData.EU.slice(0, fdiEnd)
+                        };
+                    
+                    case 'restrictions':
+                        const resEndIdx = data.tradeRestrictions.years.findIndex(y => y > endYear);
+                        const resEnd = resEndIdx === -1 ? data.tradeRestrictions.years.length : resEndIdx;
+                        return {
+                            years: data.tradeRestrictions.years.slice(0, resEnd),
+                            G7: data.tradeRestrictions.G7.slice(0, resEnd),
+                            BRICS: data.tradeRestrictions.BRICS.slice(0, resEnd)
+                        };
+                    
+                    case 'geo':
+                        return {
+                            dates: data.geoRiskIndex.dates.slice(0, endYear + 1),
+                            values: data.geoRiskIndex.values.slice(0, endYear + 1)
+                        };
+                    
+                    case 'tpu':
+                        return {
+                            dates: data.tpuIndex.dates.slice(0, endYear + 1),
+                            values: data.tpuIndex.values.slice(0, endYear + 1)
+                        };
+                    
+                    default:
+                        return data;
                 }
-                
-                // Filter FDI data
-                const fdiStartIdx = filtered.fdiGdpData.years.findIndex(y => y >= startYear);
-                const fdiEndIdx = filtered.fdiGdpData.years.findIndex(y => y > endYear);
-                const fdiEnd = fdiEndIdx === -1 ? filtered.fdiGdpData.years.length : fdiEndIdx;
-                
-                if (fdiStartIdx !== -1) {
-                    filtered.fdiGdpData.years = filtered.fdiGdpData.years.slice(fdiStartIdx, fdiEnd);
-                    filtered.fdiGdpData.USA = filtered.fdiGdpData.USA.slice(fdiStartIdx, fdiEnd);
-                    filtered.fdiGdpData.China = filtered.fdiGdpData.China.slice(fdiStartIdx, fdiEnd);
-                    filtered.fdiGdpData.EU = filtered.fdiGdpData.EU.slice(fdiStartIdx, fdiEnd);
-                }
-                
-                // Filter Trade Restrictions data
-                const trStartIdx = filtered.tradeRestrictions.years.findIndex(y => y >= startYear);
-                const trEndIdx = filtered.tradeRestrictions.years.findIndex(y => y > endYear);
-                const trEnd = trEndIdx === -1 ? filtered.tradeRestrictions.years.length : trEndIdx;
-                
-                if (trStartIdx !== -1) {
-                    filtered.tradeRestrictions.years = filtered.tradeRestrictions.years.slice(trStartIdx, trEnd);
-                    filtered.tradeRestrictions.G7 = filtered.tradeRestrictions.G7.slice(trStartIdx, trEnd);
-                    filtered.tradeRestrictions.BRICS = filtered.tradeRestrictions.BRICS.slice(trStartIdx, trEnd);
-                }
-                
-                // Filter Geopolitical Risk Index data
-                const geoStartIdx = filtered.geoRiskIndex.dates.findIndex(d => {
-                    const year = parseInt('20' + d.split('-')[1]);
-                    return year >= startYear;
-                });
-                const geoEndIdx = filtered.geoRiskIndex.dates.findIndex(d => {
-                    const year = parseInt('20' + d.split('-')[1]);
-                    return year > endYear;
-                });
-                const geoEnd = geoEndIdx === -1 ? filtered.geoRiskIndex.dates.length : geoEndIdx;
-                
-                if (geoStartIdx !== -1) {
-                    filtered.geoRiskIndex.dates = filtered.geoRiskIndex.dates.slice(geoStartIdx, geoEnd);
-                    filtered.geoRiskIndex.values = filtered.geoRiskIndex.values.slice(geoStartIdx, geoEnd);
-                }
-                
-                // Filter TPU Index data
-                const tpuStartIdx = filtered.tpuIndex.dates.findIndex(d => {
-                    const year = parseInt('20' + d.split('-')[1]);
-                    return year >= startYear;
-                });
-                const tpuEndIdx = filtered.tpuIndex.dates.findIndex(d => {
-                    const year = parseInt('20' + d.split('-')[1]);
-                    return year > endYear;
-                });
-                const tpuEnd = tpuEndIdx === -1 ? filtered.tpuIndex.dates.length : tpuEndIdx;
-                
-                if (tpuStartIdx !== -1) {
-                    filtered.tpuIndex.dates = filtered.tpuIndex.dates.slice(tpuStartIdx, tpuEnd);
-                    filtered.tpuIndex.values = filtered.tpuIndex.values.slice(tpuStartIdx, tpuEnd);
-                }
-                
-                this.filteredData = filtered;
-                return filtered;
             }
 
             async fetchLiveData() {
@@ -959,167 +938,171 @@
         let dataManager;
         let chartManager;
 
-        // Filter functions
-        function applyFilters() {
-            const startYear = parseInt(document.getElementById('startYear').value);
-            const endYear = parseInt(document.getElementById('endYear').value);
+        // Update individual chart based on slider
+        function updateChartBySlider(chartType, value) {
+            let filteredData;
             
-            if (startYear > endYear) {
-                alert('Start år skal være før eller lig med slut år');
-                return;
+            switch(chartType) {
+                case 'trade':
+                    const endYear = parseInt(value);
+                    filteredData = dataManager.filterDataByEndYear('trade', endYear);
+                    
+                    chartManager.updateChart('tradeOpenness', {
+                        labels: filteredData.years,
+                        datasets: [{
+                            label: 'Verden',
+                            data: filteredData.World,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 2
+                        }, {
+                            label: 'EU',
+                            data: filteredData.EU,
+                            borderColor: '#F5D547',
+                            backgroundColor: 'rgba(245, 213, 71, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 2
+                        }, {
+                            label: 'Kina',
+                            data: filteredData.China,
+                            borderColor: '#EE3A36',
+                            backgroundColor: 'rgba(238, 58, 54, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 2
+                        }, {
+                            label: 'USA',
+                            data: filteredData.USA,
+                            borderColor: '#005A8C',
+                            backgroundColor: 'rgba(0, 90, 140, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 2
+                        }]
+                    });
+                    
+                    // Update metrics
+                    updateTradeMetrics(filteredData);
+                    break;
+                
+                case 'fdi':
+                    const fdiYear = parseInt(value);
+                    filteredData = dataManager.filterDataByEndYear('fdi', fdiYear);
+                    
+                    chartManager.updateChart('fdiGdp', {
+                        labels: filteredData.years,
+                        datasets: [{
+                            label: 'USA',
+                            data: filteredData.USA,
+                            borderColor: '#005A8C',
+                            backgroundColor: 'rgba(0, 90, 140, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: 'Kina',
+                            data: filteredData.China,
+                            borderColor: '#EE3A36',
+                            backgroundColor: 'rgba(238, 58, 54, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: 'EU',
+                            data: filteredData.EU,
+                            borderColor: '#F5D547',
+                            backgroundColor: 'rgba(245, 213, 71, 0.1)',
+                            tension: 0.4
+                        }]
+                    });
+                    
+                    updateFdiMetrics(filteredData);
+                    break;
+                
+                case 'restrictions':
+                    const resYear = parseInt(value);
+                    filteredData = dataManager.filterDataByEndYear('restrictions', resYear);
+                    
+                    chartManager.updateChart('restrictions', {
+                        labels: filteredData.years,
+                        datasets: [{
+                            label: 'G7',
+                            data: filteredData.G7,
+                            backgroundColor: '#6FA8DC',
+                            stack: 'Stack 0',
+                        }, {
+                            label: 'BRICS',
+                            data: filteredData.BRICS,
+                            backgroundColor: '#A61E4C',
+                            stack: 'Stack 0',
+                        }]
+                    });
+                    
+                    updateRestrictionsMetrics(filteredData);
+                    break;
+                
+                case 'geo':
+                    const geoIndex = parseInt(value);
+                    filteredData = dataManager.filterDataByEndYear('geo', geoIndex);
+                    
+                    chartManager.updateChart('geoRisk', {
+                        labels: filteredData.dates,
+                        datasets: [{
+                            label: 'Geopolitisk Risiko Indeks',
+                            data: filteredData.values,
+                            borderColor: '#EE3A36',
+                            backgroundColor: 'rgba(238, 58, 54, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 1,
+                            pointHoverRadius: 5
+                        }]
+                    });
+                    
+                    updateGeoMetrics(filteredData);
+                    break;
+                
+                case 'tpu':
+                    const tpuIndex = parseInt(value);
+                    filteredData = dataManager.filterDataByEndYear('tpu', tpuIndex);
+                    
+                    chartManager.updateChart('tpu', {
+                        labels: filteredData.dates,
+                        datasets: [{
+                            label: 'TPU Indeks (% af artikler)',
+                            data: filteredData.values,
+                            borderColor: '#2A6965',
+                            backgroundColor: 'rgba(42, 105, 101, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 1,
+                            pointHoverRadius: 5
+                        }]
+                    });
+                    
+                    updateTpuMetrics(filteredData);
+                    break;
             }
-            
-            const filteredData = dataManager.filterDataByYearRange(startYear, endYear);
-            updateCharts(filteredData);
-            updateMetrics(filteredData);
-            
-            // Show filter info
-            document.getElementById('filterInfo').textContent = `Filter anvendt: ${startYear} - ${endYear}`;
-            document.getElementById('filterInfo').classList.add('active');
         }
 
-        function resetFilters() {
-            document.getElementById('startYear').value = '2015';
-            document.getElementById('endYear').value = '2025';
-            
-            const data = dataManager.originalData;
-            updateCharts(data);
-            updateMetrics(data);
-            
-            // Hide filter info
-            document.getElementById('filterInfo').classList.remove('active');
-        }
-
-        function updateCharts(data) {
-            // Update Trade Openness Chart
-            chartManager.updateChart('tradeOpenness', {
-                labels: data.tradeOpenness.years,
-                datasets: [{
-                    label: 'Verden',
-                    data: data.tradeOpenness.World,
-                    borderColor: '#4D4D4D',
-                    backgroundColor: 'rgba(77, 77, 77, 0.1)',
-                    tension: 0.4,
-                    borderWidth: 2
-                }, {
-                    label: 'EU',
-                    data: data.tradeOpenness.EU,
-                    borderColor: '#F5D547',
-                    backgroundColor: 'rgba(245, 213, 71, 0.1)',
-                    tension: 0.4,
-                    borderWidth: 2
-                }, {
-                    label: 'Kina',
-                    data: data.tradeOpenness.China,
-                    borderColor: '#EE3A36',
-                    backgroundColor: 'rgba(238, 58, 54, 0.1)',
-                    tension: 0.4,
-                    borderWidth: 2
-                }, {
-                    label: 'USA',
-                    data: data.tradeOpenness.USA,
-                    borderColor: '#005A8C',
-                    backgroundColor: 'rgba(0, 90, 140, 0.1)',
-                    tension: 0.4,
-                    borderWidth: 2
-                }]
-            });
-            
-            // Update FDI Chart
-            chartManager.updateChart('fdiGdp', {
-                labels: data.fdiGdpData.years,
-                datasets: [{
-                    label: 'USA',
-                    data: data.fdiGdpData.USA,
-                    borderColor: '#005A8C',
-                    backgroundColor: 'rgba(0, 90, 140, 0.1)',
-                    tension: 0.4
-                }, {
-                    label: 'Kina',
-                    data: data.fdiGdpData.China,
-                    borderColor: '#EE3A36',
-                    backgroundColor: 'rgba(238, 58, 54, 0.1)',
-                    tension: 0.4
-                }, {
-                    label: 'EU',
-                    data: data.fdiGdpData.EU,
-                    borderColor: '#F5D547',
-                    backgroundColor: 'rgba(245, 213, 71, 0.1)',
-                    tension: 0.4
-                }]
-            });
-            
-            // Update Trade Restrictions Chart
-            chartManager.updateChart('restrictions', {
-                labels: data.tradeRestrictions.years,
-                datasets: [{
-                    label: 'G7',
-                    data: data.tradeRestrictions.G7,
-                    backgroundColor: '#6FA8DC',
-                    stack: 'Stack 0',
-                }, {
-                    label: 'BRICS',
-                    data: data.tradeRestrictions.BRICS,
-                    backgroundColor: '#A61E4C',
-                    stack: 'Stack 0',
-                }]
-            });
-            
-            // Update Geopolitical Risk Index Chart
-            chartManager.updateChart('geoRisk', {
-                labels: data.geoRiskIndex.dates,
-                datasets: [{
-                    label: 'Geopolitisk Risiko Indeks',
-                    data: data.geoRiskIndex.values,
-                    borderColor: '#EE3A36',
-                    backgroundColor: 'rgba(238, 58, 54, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 1,
-                    pointHoverRadius: 5
-                }]
-            });
-            
-            // Update TPU Chart
-            chartManager.updateChart('tpu', {
-                labels: data.tpuIndex.dates,
-                datasets: [{
-                    label: 'TPU Indeks (% af artikler)',
-                    data: data.tpuIndex.values,
-                    borderColor: '#2A6965',
-                    backgroundColor: 'rgba(42, 105, 101, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 1,
-                    pointHoverRadius: 5
-                }]
-            });
-        }
-
-        function updateMetrics(data) {
-            // Update Trade Openness metrics
-            if (data.tradeOpenness && data.tradeOpenness.years.length > 0) {
-                const currentYearIndex = data.tradeOpenness.years.length - 1;
+        function updateTradeMetrics(data) {
+            if (data && data.years.length > 0) {
+                const currentYearIndex = data.years.length - 1;
                 const prevYearIndex = currentYearIndex - 1;
                 
                 document.getElementById('worldTrade').textContent = 
-                    data.tradeOpenness.World[currentYearIndex].toFixed(1) + '%';
+                    data.World[currentYearIndex].toFixed(1) + '%';
                 document.getElementById('euTrade').textContent = 
-                    data.tradeOpenness.EU[currentYearIndex].toFixed(1) + '%';
+                    data.EU[currentYearIndex].toFixed(1) + '%';
                 document.getElementById('chinaTrade').textContent = 
-                    data.tradeOpenness.China[currentYearIndex].toFixed(1) + '%';
+                    data.China[currentYearIndex].toFixed(1) + '%';
                 document.getElementById('usaTrade').textContent = 
-                    data.tradeOpenness.USA[currentYearIndex].toFixed(1) + '%';
+                    data.USA[currentYearIndex].toFixed(1) + '%';
                 
                 if (prevYearIndex >= 0) {
-                    const worldChange = ((data.tradeOpenness.World[currentYearIndex] - data.tradeOpenness.World[prevYearIndex]) / 
-                                        data.tradeOpenness.World[prevYearIndex] * 100).toFixed(1);
-                    const euChange = ((data.tradeOpenness.EU[currentYearIndex] - data.tradeOpenness.EU[prevYearIndex]) / 
-                                     data.tradeOpenness.EU[prevYearIndex] * 100).toFixed(1);
-                    const chinaChange = ((data.tradeOpenness.China[currentYearIndex] - data.tradeOpenness.China[prevYearIndex]) / 
-                                        data.tradeOpenness.China[prevYearIndex] * 100).toFixed(1);
-                    const usaChange = ((data.tradeOpenness.USA[currentYearIndex] - data.tradeOpenness.USA[prevYearIndex]) / 
-                                      data.tradeOpenness.USA[prevYearIndex] * 100).toFixed(1);
+                    const worldChange = ((data.World[currentYearIndex] - data.World[prevYearIndex]) / 
+                                        data.World[prevYearIndex] * 100).toFixed(1);
+                    const euChange = ((data.EU[currentYearIndex] - data.EU[prevYearIndex]) / 
+                                     data.EU[prevYearIndex] * 100).toFixed(1);
+                    const chinaChange = ((data.China[currentYearIndex] - data.China[prevYearIndex]) / 
+                                        data.China[prevYearIndex] * 100).toFixed(1);
+                    const usaChange = ((data.USA[currentYearIndex] - data.USA[prevYearIndex]) / 
+                                      data.USA[prevYearIndex] * 100).toFixed(1);
                     
                     document.getElementById('worldTradeTrend').textContent = (worldChange > 0 ? '+' : '') + worldChange + '%';
                     document.getElementById('euTradeTrend').textContent = (euChange > 0 ? '+' : '') + euChange + '%';
@@ -1132,30 +1115,27 @@
                     document.getElementById('usaTradeTrend').className = usaChange > 0 ? 'trend up' : 'trend down';
                 }
             }
+        }
 
-            // Update currency share (doesn't change with filter)
-            document.getElementById('usdShare').textContent = 
-                data.currencyData.current[0] + '%';
-
-            // Update FDI metrics
-            const currentYear = data.fdiGdpData.years.length - 1;
+        function updateFdiMetrics(data) {
+            const currentYear = data.years.length - 1;
             const prevYear = currentYear - 1;
 
             if (currentYear >= 0) {
                 document.getElementById('usaFdi').textContent = 
-                    data.fdiGdpData.USA[currentYear].toFixed(2) + '%';
+                    data.USA[currentYear].toFixed(2) + '%';
                 document.getElementById('chinaFdi').textContent = 
-                    data.fdiGdpData.China[currentYear].toFixed(2) + '%';
+                    data.China[currentYear].toFixed(2) + '%';
                 document.getElementById('euFdi').textContent = 
-                    data.fdiGdpData.EU[currentYear].toFixed(2) + '%';
+                    data.EU[currentYear].toFixed(2) + '%';
 
                 if (prevYear >= 0) {
-                    const usaTrend = ((data.fdiGdpData.USA[currentYear] - data.fdiGdpData.USA[prevYear]) / 
-                                     data.fdiGdpData.USA[prevYear] * 100).toFixed(1);
-                    const chinaTrend = ((data.fdiGdpData.China[currentYear] - data.fdiGdpData.China[prevYear]) / 
-                                       data.fdiGdpData.China[prevYear] * 100).toFixed(1);
-                    const euTrend = ((data.fdiGdpData.EU[currentYear] - data.fdiGdpData.EU[prevYear]) / 
-                                    data.fdiGdpData.EU[prevYear] * 100).toFixed(1);
+                    const usaTrend = ((data.USA[currentYear] - data.USA[prevYear]) / 
+                                     data.USA[prevYear] * 100).toFixed(1);
+                    const chinaTrend = ((data.China[currentYear] - data.China[prevYear]) / 
+                                       data.China[prevYear] * 100).toFixed(1);
+                    const euTrend = ((data.EU[currentYear] - data.EU[prevYear]) / 
+                                    data.EU[prevYear] * 100).toFixed(1);
 
                     document.getElementById('usaTrend').textContent = (usaTrend > 0 ? '+' : '') + usaTrend + '%';
                     document.getElementById('chinaTrend').textContent = (chinaTrend > 0 ? '+' : '') + chinaTrend + '%';
@@ -1166,52 +1146,66 @@
                     document.getElementById('euTrend').className = euTrend > 0 ? 'trend up' : 'trend down';
                 }
             }
+        }
 
-            // Update Trade Restrictions metrics
-            const trCurrentYearIndex = data.tradeRestrictions.years.length - 1;
-            const trPrevYearIndex = trCurrentYearIndex - 1;
+        function updateRestrictionsMetrics(data) {
+            const currentYearIndex = data.years.length - 1;
+            const prevYearIndex = currentYearIndex - 1;
 
-            if (trCurrentYearIndex >= 0) {
-                const currentTotal = data.tradeRestrictions.G7[trCurrentYearIndex] + 
-                                    data.tradeRestrictions.BRICS[trCurrentYearIndex];
+            if (currentYearIndex >= 0) {
+                const currentTotal = data.G7[currentYearIndex] + data.BRICS[currentYearIndex];
                 document.getElementById('totalRestrictions').textContent = currentTotal.toLocaleString();
 
-                if (trPrevYearIndex >= 0) {
-                    const prevTotal = data.tradeRestrictions.G7[trPrevYearIndex] + 
-                                      data.tradeRestrictions.BRICS[trPrevYearIndex];
+                if (prevYearIndex >= 0) {
+                    const prevTotal = data.G7[prevYearIndex] + data.BRICS[prevYearIndex];
                     const restrictionChange = currentTotal - prevTotal;
                     document.getElementById('restrictionsTrend').textContent = (restrictionChange > 0 ? '+' : '') + restrictionChange;
                     document.getElementById('restrictionsTrend').className = restrictionChange > 0 ? 'trend up' : 'trend down';
                 }
             }
+        }
 
-            // Update Geopolitical Risk metrics
-            const geoRiskValues = data.geoRiskIndex.values;
-            if (geoRiskValues.length > 0) {
-                const currentRisk = geoRiskValues[geoRiskValues.length - 1];
+        function updateGeoMetrics(data) {
+            const values = data.values;
+            if (values.length > 0) {
+                const currentRisk = values[values.length - 1];
                 document.getElementById('currentRisk').textContent = currentRisk.toFixed(1);
 
-                if (geoRiskValues.length > 1) {
-                    const previousRisk = geoRiskValues[geoRiskValues.length - 2];
+                if (values.length > 1) {
+                    const previousRisk = values[values.length - 2];
                     const riskChange = ((currentRisk - previousRisk) / previousRisk * 100).toFixed(1);
                     document.getElementById('riskTrend').textContent = (riskChange > 0 ? '+' : '') + riskChange + '%';
                     document.getElementById('riskTrend').className = riskChange > 0 ? 'trend up' : 'trend down';
                 }
             }
+        }
 
-            // Update TPU metrics
-            const tpuValues = data.tpuIndex.values;
-            if (tpuValues.length > 0) {
-                const currentTPU = tpuValues[tpuValues.length - 1];
+        function updateTpuMetrics(data) {
+            const values = data.values;
+            if (values.length > 0) {
+                const currentTPU = values[values.length - 1];
                 document.getElementById('currentTPU').textContent = currentTPU.toFixed(2) + '%';
 
-                if (tpuValues.length > 1) {
-                    const previousTPU = tpuValues[tpuValues.length - 2];
+                if (values.length > 1) {
+                    const previousTPU = values[values.length - 2];
                     const tpuChange = ((currentTPU - previousTPU) / previousTPU * 100).toFixed(1);
                     document.getElementById('tpuTrend').textContent = (tpuChange > 0 ? '+' : '') + tpuChange + '%';
                     document.getElementById('tpuTrend').className = tpuChange > 0 ? 'trend up' : 'trend down';
                 }
             }
+        }
+
+        function updateAllMetrics(data) {
+            // Update currency share (doesn't change with filter)
+            document.getElementById('usdShare').textContent = 
+                data.currencyData.current[0] + '%';
+            
+            // Update all other metrics
+            updateTradeMetrics(data.tradeOpenness);
+            updateFdiMetrics(data.fdiGdpData);
+            updateRestrictionsMetrics(data.tradeRestrictions);
+            updateGeoMetrics(data.geoRiskIndex);
+            updateTpuMetrics(data.tpuIndex);
         }
 
         // Initialize Dashboard
@@ -1226,7 +1220,10 @@
             }
 
             chartManager.initCharts(staticData);
-            updateMetrics(staticData);
+            updateAllMetrics(staticData);
+
+            // Initialize sliders
+            initializeSliders();
 
             // Try to fetch live data
             const liveSuccess = await dataManager.fetchLiveData();
@@ -1251,94 +1248,92 @@
             }, config.updateInterval);
         }
 
-        // PDF Export Function
-        async function exportToPDF() {
-            const button = document.getElementById('exportBtn');
-            const originalText = button.innerHTML;
+        // Initialize sliders
+        function initializeSliders() {
+            // Trade slider
+            const tradeSlider = document.getElementById('tradeSlider');
+            tradeSlider.addEventListener('input', function() {
+                updateChartBySlider('trade', this.value);
+                showTooltip('tradeTooltip', this.value, this);
+            });
+            tradeSlider.addEventListener('mouseenter', function() {
+                showTooltip('tradeTooltip', this.value, this);
+            });
+            tradeSlider.addEventListener('mouseleave', function() {
+                hideTooltip('tradeTooltip');
+            });
             
-            try {
-                // Disable button and show loading state
-                button.disabled = true;
-                button.innerHTML = '⏳';
-                
-                // Wait a moment for any chart animations to complete
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                // Capture the dashboard element
-                const element = document.querySelector('.dashboard');
-                const canvas = await html2canvas(element, {
-                    scale: 2, // Higher quality
-                    logging: false,
-                    useCORS: true,
-                    backgroundColor: '#DEDEDE'
-                });
-                
-                // Create PDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-                
-                // Calculate dimensions to fit the page
-                const imgWidth = pdf.internal.pageSize.getWidth();
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                const pageHeight = pdf.internal.pageSize.getHeight();
-                
-                let heightLeft = imgHeight;
-                let position = 0;
-                
-                // Add image to PDF, handling multiple pages if needed
-                const imgData = canvas.toDataURL('image/png');
-                
-                if (heightLeft <= pageHeight) {
-                    // Fits on one page
-                    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                } else {
-                    // Multiple pages needed
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                    
-                    while (heightLeft > 0) {
-                        position = heightLeft - imgHeight;
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                        heightLeft -= pageHeight;
-                    }
-                }
-                
-                // Add metadata
-                pdf.setProperties({
-                    title: 'Geoøkonomisk Dashboard',
-                    subject: 'Dashboard Export',
-                    author: 'Dashboard System',
-                    keywords: 'geoeconomic, fragmentation, dashboard',
-                    creator: 'Geoøkonomisk Dashboard'
-                });
-                
-                // Generate timestamp for filename
-                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-                const filename = `dashboard-export-${timestamp}.pdf`;
-                
-                // Save the PDF
-                pdf.save(filename);
-                
-                // Success feedback
-                button.innerHTML = '✓';
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }, 2000);
-                
-            } catch (error) {
-                console.error('PDF export failed:', error);
-                button.innerHTML = '✗';
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }, 2000);
-            }
+            // FDI slider
+            const fdiSlider = document.getElementById('fdiSlider');
+            fdiSlider.addEventListener('input', function() {
+                updateChartBySlider('fdi', this.value);
+                showTooltip('fdiTooltip', this.value, this);
+            });
+            fdiSlider.addEventListener('mouseenter', function() {
+                showTooltip('fdiTooltip', this.value, this);
+            });
+            fdiSlider.addEventListener('mouseleave', function() {
+                hideTooltip('fdiTooltip');
+            });
+            
+            // Restrictions slider
+            const restrictionsSlider = document.getElementById('restrictionsSlider');
+            restrictionsSlider.addEventListener('input', function() {
+                updateChartBySlider('restrictions', this.value);
+                showTooltip('restrictionsTooltip', this.value, this);
+            });
+            restrictionsSlider.addEventListener('mouseenter', function() {
+                showTooltip('restrictionsTooltip', this.value, this);
+            });
+            restrictionsSlider.addEventListener('mouseleave', function() {
+                hideTooltip('restrictionsTooltip');
+            });
+            
+            // Geo Risk slider
+            const geoSlider = document.getElementById('geoSlider');
+            geoSlider.addEventListener('input', function() {
+                updateChartBySlider('geo', this.value);
+                const date = dataManager.originalData.geoRiskIndex.dates[this.value] || 'N/A';
+                showTooltip('geoTooltip', date, this);
+            });
+            geoSlider.addEventListener('mouseenter', function() {
+                const date = dataManager.originalData.geoRiskIndex.dates[this.value] || 'N/A';
+                showTooltip('geoTooltip', date, this);
+            });
+            geoSlider.addEventListener('mouseleave', function() {
+                hideTooltip('geoTooltip');
+            });
+            
+            // TPU slider
+            const tpuSlider = document.getElementById('tpuSlider');
+            tpuSlider.addEventListener('input', function() {
+                updateChartBySlider('tpu', this.value);
+                const date = dataManager.originalData.tpuIndex.dates[this.value] || 'N/A';
+                showTooltip('tpuTooltip', date, this);
+            });
+            tpuSlider.addEventListener('mouseenter', function() {
+                const date = dataManager.originalData.tpuIndex.dates[this.value] || 'N/A';
+                showTooltip('tpuTooltip', date, this);
+            });
+            tpuSlider.addEventListener('mouseleave', function() {
+                hideTooltip('tpuTooltip');
+            });
+        }
+
+        function showTooltip(tooltipId, value, slider) {
+            const tooltip = document.getElementById(tooltipId);
+            const rect = slider.getBoundingClientRect();
+            const percent = (slider.value - slider.min) / (slider.max - slider.min);
+            
+            tooltip.textContent = value;
+            tooltip.style.left = rect.left + (rect.width * percent) - (tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = rect.top - 30 + 'px';
+            tooltip.classList.add('show');
+        }
+
+        function hideTooltip(tooltipId) {
+            const tooltip = document.getElementById(tooltipId);
+            tooltip.classList.remove('show');
         }
 
         // Start the dashboard
@@ -1346,4 +1341,3 @@
     </script>
 </body>
 </html>
-
