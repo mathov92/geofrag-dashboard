@@ -70,28 +70,6 @@
             color: white;
             transform: translateY(-1px);
         }
-        .wide-card {
-            background: white;
-            border-radius: 4px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.15);
-            transition: transform 0.3s ease;
-            border: 1px solid #E8E8E8;
-            margin-bottom: 20px;
-            position: relative;
-            max-height: 480px;
-        }
-        .wide-card:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.2);
-        }
-        .wide-card h2 {
-            color: #5A1C26;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            font-weight: normal;
-            letter-spacing: 0.01em;
-        }
         
         /* Country selector dropdown styles */
         .country-selector {
@@ -185,15 +163,6 @@
             border: 1px solid #E8E8E8;
         }
         
-        .wide-card .chart-wrapper {
-            height: 240px;
-            position: relative;
-            margin-bottom: 10px;
-            padding-top: 10px;
-        }
-        .wide-card canvas {
-            max-height: 240px !important;
-        }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -270,36 +239,12 @@
             letter-spacing: 0.01em;
         }
         
-        /* Metrics grid for wide card */
-        .wide-metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 8px;
-            margin-top: 5px;
-            padding-top: 5px;
-        }
-        
-        .wide-metrics-grid .metric {
-            margin: 0;
-            padding: 8px;
-            font-size: 0.85em;
-        }
-        
-        .wide-metrics-grid .metric-value {
-            font-size: 1em;
-        }
-        
         /* Dual Range Slider Styles */
         .slider-container {
             margin: 10px auto 10px;
             width: 85%;
             max-width: 400px;
             padding: 0;
-        }
-        
-        .wide-card .slider-container {
-            margin: 5px auto 5px;
-            max-width: 450px;
         }
         
         .slider-wrapper {
@@ -412,40 +357,6 @@
                 display: none;
             }
             
-            /* Wide card for trade openness - single column */
-            .wide-card {
-                page-break-inside: avoid;
-                break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid #999;
-                margin-bottom: 15px;
-                padding: 10px;
-                max-height: none;
-                width: 100%;
-            }
-            
-            .wide-card h2 {
-                font-size: 11pt;
-                margin-bottom: 8px;
-            }
-            
-            /* Trade chart wrapper and canvas */
-            .wide-card .chart-wrapper {
-                height: 140px !important;
-                max-height: 140px !important;
-                width: 100% !important;
-                padding-top: 0;
-                margin-bottom: 8px;
-                position: relative;
-            }
-            
-            .wide-card canvas {
-                max-height: 140px !important;
-                height: 140px !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-            
             /* Grid layout - SINGLE COLUMN for print */
             .grid {
                 display: block !important;
@@ -518,16 +429,6 @@
                 display: none !important;
             }
             
-            /* Metrics grid adjustments */
-            .wide-metrics-grid {
-                margin-top: 8px;
-                page-break-inside: avoid;
-                padding-top: 0;
-                gap: 4px;
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
             .metric {
                 background: #f9f9f9;
                 border: 1px solid #ccc;
@@ -587,9 +488,6 @@
             .grid {
                 grid-template-columns: 1fr;
             }
-            .wide-metrics-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
         
         @media (min-width: 1200px) {
@@ -616,225 +514,225 @@
             </div>
         </div>
 
-        <!-- Trade Openness Chart - Full Width but Reduced Height -->
-        <div class="wide-card">
-            <h2>Handelsåbenhed (Handel/BNP %)
-                <div class="country-selector">
-                    <button class="dropdown-button" id="countryDropdownBtn">
-                        Vælg lande ▼
-                    </button>
-                    <div class="dropdown-content" id="countryDropdown">
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="World" checked> Verden
-                                <span class="country-color" style="background: #4D4D4D;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="EU" checked> EU
-                                <span class="country-color" style="background: #F5D547;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Denmark" checked> Danmark
-                                <span class="country-color" style="background: #C60C30;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="China" checked> Kina
-                                <span class="country-color" style="background: #EE3A36;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="India" checked> Indien
-                                <span class="country-color" style="background: #FF9933;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="USA" checked> USA
-                                <span class="country-color" style="background: #005A8C;"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </h2>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider-track"></div>
-                    <div class="slider-range" id="tradeRange"></div>
-                    <input type="range" class="slider-left" id="tradeMin" min="2000" max="2024" value="2000">
-                    <input type="range" class="slider-right" id="tradeMax" min="2000" max="2024" value="2024">
-                </div>
-                <div class="slider-labels">
-                    <span>2000</span>
-                    <span>2024</span>
-                </div>
-                <div class="slider-value-display" id="tradeDisplay">2000 - 2024</div>
-            </div>
-            <div class="chart-wrapper">
-                <canvas id="tradeOpennessChart"></canvas>
-            </div>
-            <div class="wide-metrics-grid">
-                <div class="metric">
-                    <span>Verden</span>
-                    <span class="metric-value" id="worldTrade">--</span>
-                    <span class="trend down" id="worldTradeTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>EU</span>
-                    <span class="metric-value" id="euTrade">--</span>
-                    <span class="trend down" id="euTradeTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Kina</span>
-                    <span class="metric-value" id="chinaTrade">--</span>
-                    <span class="trend up" id="chinaTradeTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>USA</span>
-                    <span class="metric-value" id="usaTrade">--</span>
-                    <span class="trend up" id="usaTradeTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Indien</span>
-                    <span class="metric-value" id="indiaTrade">--</span>
-                    <span class="trend up" id="indiaTradeTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Danmark</span>
-                    <span class="metric-value" id="denmarkTrade">--</span>
-                    <span class="trend up" id="denmarkTradeTrend">--</span>
-                </div>
-            </div>
-            <div class="citation">
-                Kilde: World Bank - Trade (% of GDP) Indicator
-            </div>
-        </div>
-
-        <!-- Export Volumes Chart - New Wide Card -->
-        <div class="wide-card">
-            <h2>Vareeksport (USD)
-                <div class="country-selector">
-                    <button class="dropdown-button" id="exportDropdownBtn">
-                        Vælg lande ▼
-                    </button>
-                    <div class="dropdown-content" id="exportDropdown">
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="EU27" checked> EU27
-                                <span class="country-color" style="background: #F5D547;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="USA" checked> USA
-                                <span class="country-color" style="background: #005A8C;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Indien" checked> Indien
-                                <span class="country-color" style="background: #FF9933;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Vietnam"> Vietnam
-                                <span class="country-color" style="background: #DA251D;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Thailand"> Thailand
-                                <span class="country-color" style="background: #A51931;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Mexico"> Mexico
-                                <span class="country-color" style="background: #006847;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Rusland"> Rusland
-                                <span class="country-color" style="background: #0033A0;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Afrika"> Afrika
-                                <span class="country-color" style="background: #8B4513;"></span>
-                            </label>
-                        </div>
-                        <div class="dropdown-item">
-                            <label>
-                                <input type="checkbox" value="Ungarn"> Ungarn
-                                <span class="country-color" style="background: #CE2939;"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </h2>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider-track"></div>
-                    <div class="slider-range" id="exportRange"></div>
-                    <input type="range" class="slider-left" id="exportMin" min="0" max="77" value="0">
-                    <input type="range" class="slider-right" id="exportMax" min="0" max="77" value="77">
-                </div>
-                <div class="slider-labels">
-                    <span>Mar-19</span>
-                    <span>Aug-25</span>
-                </div>
-                <div class="slider-value-display" id="exportDisplay">Mar-19 - Aug-25</div>
-            </div>
-            <div class="chart-wrapper">
-                <canvas id="exportChart"></canvas>
-            </div>
-            <div class="wide-metrics-grid" id="exportMetrics">
-                <div class="metric">
-                    <span>EU27</span>
-                    <span class="metric-value" id="eu27Export">--</span>
-                    <span class="trend" id="eu27Trend">--</span>
-                </div>
-                <div class="metric">
-                    <span>USA</span>
-                    <span class="metric-value" id="usaExport">--</span>
-                    <span class="trend" id="usaExportTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Indien</span>
-                    <span class="metric-value" id="indiaExport">--</span>
-                    <span class="trend" id="indiaExportTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Vietnam</span>
-                    <span class="metric-value" id="vietnamExport">--</span>
-                    <span class="trend" id="vietnamTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Thailand</span>
-                    <span class="metric-value" id="thailandExport">--</span>
-                    <span class="trend" id="thailandTrend">--</span>
-                </div>
-                <div class="metric">
-                    <span>Mexico</span>
-                    <span class="metric-value" id="mexicoExport">--</span>
-                    <span class="trend" id="mexicoTrend">--</span>
-                </div>
-            </div>
-            <div class="citation">
-                Kilde: Tolddata fra UN COMTRADE Database
-            </div>
-        </div>
-
         <div class="grid">
+            <!-- Trade Openness Chart -->
+            <div class="card">
+                <h2>Handelsåbenhed (Handel/BNP %)
+                    <div class="country-selector">
+                        <button class="dropdown-button" id="countryDropdownBtn">
+                            Vælg lande ▼
+                        </button>
+                        <div class="dropdown-content" id="countryDropdown">
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="World" checked> Verden
+                                    <span class="country-color" style="background: #4D4D4D;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="EU" checked> EU
+                                    <span class="country-color" style="background: #F5D547;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Denmark" checked> Danmark
+                                    <span class="country-color" style="background: #C60C30;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="China" checked> Kina
+                                    <span class="country-color" style="background: #EE3A36;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="India" checked> Indien
+                                    <span class="country-color" style="background: #FF9933;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="USA" checked> USA
+                                    <span class="country-color" style="background: #005A8C;"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <div class="slider-range" id="tradeRange"></div>
+                        <input type="range" class="slider-left" id="tradeMin" min="2000" max="2024" value="2000">
+                        <input type="range" class="slider-right" id="tradeMax" min="2000" max="2024" value="2024">
+                    </div>
+                    <div class="slider-labels">
+                        <span>2000</span>
+                        <span>2024</span>
+                    </div>
+                    <div class="slider-value-display" id="tradeDisplay">2000 - 2024</div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="tradeOpennessChart"></canvas>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px;">
+                    <div class="metric">
+                        <span>Verden</span>
+                        <span class="metric-value" id="worldTrade">--</span>
+                        <span class="trend down" id="worldTradeTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>EU</span>
+                        <span class="metric-value" id="euTrade">--</span>
+                        <span class="trend down" id="euTradeTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Kina</span>
+                        <span class="metric-value" id="chinaTrade">--</span>
+                        <span class="trend up" id="chinaTradeTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>USA</span>
+                        <span class="metric-value" id="usaTrade">--</span>
+                        <span class="trend up" id="usaTradeTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Indien</span>
+                        <span class="metric-value" id="indiaTrade">--</span>
+                        <span class="trend up" id="indiaTradeTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Danmark</span>
+                        <span class="metric-value" id="denmarkTrade">--</span>
+                        <span class="trend up" id="denmarkTradeTrend">--</span>
+                    </div>
+                </div>
+                <div class="citation">
+                    Kilde: World Bank - Trade (% of GDP) Indicator
+                </div>
+            </div>
+
+            <!-- Export Volumes Chart -->
+            <div class="card">
+                <h2>Vareeksport (USD)
+                    <div class="country-selector">
+                        <button class="dropdown-button" id="exportDropdownBtn">
+                            Vælg lande ▼
+                        </button>
+                        <div class="dropdown-content" id="exportDropdown">
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="EU27" checked> EU27
+                                    <span class="country-color" style="background: #F5D547;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="USA" checked> USA
+                                    <span class="country-color" style="background: #005A8C;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Indien" checked> Indien
+                                    <span class="country-color" style="background: #FF9933;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Vietnam"> Vietnam
+                                    <span class="country-color" style="background: #DA251D;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Thailand"> Thailand
+                                    <span class="country-color" style="background: #A51931;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Mexico"> Mexico
+                                    <span class="country-color" style="background: #006847;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Rusland"> Rusland
+                                    <span class="country-color" style="background: #0033A0;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Afrika"> Afrika
+                                    <span class="country-color" style="background: #8B4513;"></span>
+                                </label>
+                            </div>
+                            <div class="dropdown-item">
+                                <label>
+                                    <input type="checkbox" value="Ungarn"> Ungarn
+                                    <span class="country-color" style="background: #CE2939;"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <div class="slider-range" id="exportRange"></div>
+                        <input type="range" class="slider-left" id="exportMin" min="0" max="77" value="0">
+                        <input type="range" class="slider-right" id="exportMax" min="0" max="77" value="77">
+                    </div>
+                    <div class="slider-labels">
+                        <span>Mar-19</span>
+                        <span>Aug-25</span>
+                    </div>
+                    <div class="slider-value-display" id="exportDisplay">Mar-19 - Aug-25</div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="exportChart"></canvas>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px;" id="exportMetrics">
+                    <div class="metric">
+                        <span>EU27</span>
+                        <span class="metric-value" id="eu27Export">--</span>
+                        <span class="trend" id="eu27Trend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>USA</span>
+                        <span class="metric-value" id="usaExport">--</span>
+                        <span class="trend" id="usaExportTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Indien</span>
+                        <span class="metric-value" id="indiaExport">--</span>
+                        <span class="trend" id="indiaExportTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Vietnam</span>
+                        <span class="metric-value" id="vietnamExport">--</span>
+                        <span class="trend" id="vietnamTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Thailand</span>
+                        <span class="metric-value" id="thailandExport">--</span>
+                        <span class="trend" id="thailandTrend">--</span>
+                    </div>
+                    <div class="metric">
+                        <span>Mexico</span>
+                        <span class="metric-value" id="mexicoExport">--</span>
+                        <span class="trend" id="mexicoTrend">--</span>
+                    </div>
+                </div>
+                <div class="citation">
+                    Kilde: Tolddata fra UN COMTRADE Database
+                </div>
+            </div>
+
             <!-- Currency Usage Trends - NO SLIDER -->
             <div class="card">
                 <h2>Reservevaluta Status</h2>
@@ -1198,7 +1096,7 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             }
 
             initCharts(data) {
-                // Trade Openness Chart - with adjusted height
+                // Trade Openness Chart
                 this.charts.tradeOpenness = new Chart(document.getElementById('tradeOpennessChart'), {
                     type: 'line',
                     data: {
@@ -1294,7 +1192,7 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // Export Volume Chart - New
+                // Export Volume Chart
                 const exportDatasets = [];
                 const colorMap = {
                     'EU27': '#F5D547',
@@ -2257,17 +2155,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                         selectedCountries.includes(country) ? 'flex' : 'none';
                 }
             });
-            
-            // Adjust grid columns based on visible metrics
-            const visibleCount = selectedCountries.length;
-            const metricsGrid = document.querySelector('.wide-metrics-grid');
-            if (metricsGrid) {
-                if (visibleCount <= 3) {
-                    metricsGrid.style.gridTemplateColumns = `repeat(${visibleCount}, 1fr)`;
-                } else {
-                    metricsGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(140px, 1fr))';
-                }
-            }
         }
 
         // Start the dashboard
