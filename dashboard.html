@@ -53,6 +53,23 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+        .print-button {
+            background: white;
+            color: #5A1C26;
+            border: 2px solid white;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 0.9em;
+            cursor: pointer;
+            font-family: 'Garamond', 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .print-button:hover {
+            background: #5A1C26;
+            color: white;
+            transform: translateY(-1px);
+        }
         .wide-card {
             background: white;
             border-radius: 4px;
@@ -76,12 +93,13 @@
             letter-spacing: 0.01em;
         }
         .wide-card .chart-wrapper {
-            height: 220px;
+            height: 240px;
             position: relative;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            padding-top: 10px;
         }
         .wide-card canvas {
-            max-height: 220px !important;
+            max-height: 240px !important;
         }
         .grid {
             display: grid;
@@ -164,7 +182,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 5px;
+            padding-top: 5px;
         }
         
         .wide-metrics-grid .metric {
@@ -179,21 +198,21 @@
         
         /* Dual Range Slider Styles */
         .slider-container {
-            margin: 15px auto 20px;
-            width: 90%;
-            max-width: 450px;
-            padding: 5px 15px;
+            margin: 10px auto 10px;
+            width: 85%;
+            max-width: 400px;
+            padding: 0;
         }
         
         .wide-card .slider-container {
-            margin: 10px auto 15px;
-            max-width: 500px;
+            margin: 5px auto 5px;
+            max-width: 450px;
         }
         
         .slider-wrapper {
             position: relative;
-            height: 30px;
-            margin: 15px 0;
+            height: 25px;
+            margin: 10px 0 5px 0;
         }
         
         .slider-track {
@@ -258,17 +277,158 @@
         .slider-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
-            font-size: 0.75em;
+            margin-top: 5px;
+            font-size: 0.7em;
             color: #5A1C26;
         }
         
         .slider-value-display {
             text-align: center;
-            margin-top: 3px;
-            font-size: 0.85em;
+            margin-top: 2px;
+            font-size: 0.8em;
             color: #2A6965;
             font-weight: 500;
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .dashboard {
+                max-width: 100%;
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 24pt;
+                margin-bottom: 20px;
+                page-break-after: avoid;
+            }
+            
+            .status-bar {
+                display: none;
+            }
+            
+            .print-button {
+                display: none;
+            }
+            
+            /* Prevent page breaks inside cards */
+            .wide-card, .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin-bottom: 15px;
+                display: block;
+            }
+            
+            /* Force page break before specific sections if needed */
+            .grid {
+                page-break-before: auto;
+                page-break-inside: avoid;
+                display: block;
+            }
+            
+            .grid .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                width: 48%;
+                display: inline-block;
+                vertical-align: top;
+                margin-right: 2%;
+                margin-bottom: 20px;
+            }
+            
+            .grid .card:nth-child(even) {
+                margin-right: 0;
+            }
+            
+            /* Ensure trade openness chart fits on first page */
+            .wide-card {
+                max-height: none;
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            
+            /* Adjust chart heights for print */
+            .wide-card .chart-wrapper {
+                height: 200px !important;
+            }
+            
+            .wide-card canvas {
+                max-height: 200px !important;
+            }
+            
+            .card .chart-wrapper {
+                height: 180px !important;
+                min-height: 180px !important;
+                max-height: 180px !important;
+            }
+            
+            .card canvas {
+                max-height: 180px !important;
+            }
+            
+            /* Hide sliders in print */
+            .slider-container {
+                display: none;
+            }
+            
+            /* Adjust metrics for print */
+            .wide-metrics-grid {
+                margin-top: 10px;
+                page-break-inside: avoid;
+            }
+            
+            .metric {
+                background: #f5f5f5;
+                border: 1px solid #ddd;
+                padding: 5px;
+                font-size: 9pt;
+            }
+            
+            /* Ensure citations are visible */
+            .citation {
+                font-size: 8pt;
+                color: #555;
+                page-break-inside: avoid;
+            }
+            
+            /* Hide interactive elements */
+            .slider-left, .slider-right, .slider-track, .slider-range {
+                display: none;
+            }
+            
+            /* Adjust font sizes for print */
+            h2 {
+                font-size: 14pt;
+                margin-bottom: 10px;
+            }
+            
+            /* Force new page for better layout if needed */
+            .card:nth-child(3) {
+                page-break-before: always;
+            }
+            
+            /* Ensure live indicator is hidden */
+            .live-indicator {
+                display: none !important;
+            }
+            
+            /* Page setup */
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+            
+            @page:first {
+                margin-top: 1cm;
+            }
         }
         
         /* Responsive adjustments */
@@ -297,7 +457,12 @@
                 <span id="dataStatus">Loading data...</span>
                 <span class="live-indicator" id="liveIndicator" style="display:none;"></span>
             </div>
-            <div class="status">Sidste opdatering: <span id="lastUpdate">--</span></div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <button id="printButton" class="print-button" onclick="window.print()">
+                    📄 Print til PDF
+                </button>
+                <div class="status">Sidste opdatering: <span id="lastUpdate">--</span></div>
+            </div>
         </div>
 
         <!-- Trade Openness Chart - Full Width but Reduced Height -->
