@@ -92,6 +92,99 @@
             font-weight: normal;
             letter-spacing: 0.01em;
         }
+        
+        /* Country selector dropdown styles */
+        .country-selector {
+            position: relative;
+            display: inline-block;
+            float: right;
+            margin-top: -10px;
+        }
+        
+        .dropdown-button {
+            background: white;
+            border: 1px solid #2A6965;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 0.85em;
+            cursor: pointer;
+            font-family: 'Garamond', 'Georgia', serif;
+            color: #2A6965;
+            min-width: 150px;
+            text-align: left;
+            position: relative;
+            padding-right: 25px;
+        }
+        
+        .dropdown-button:after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7em;
+        }
+        
+        .dropdown-button:hover {
+            background: #F5F5F5;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid #E8E8E8;
+            border-radius: 4px;
+            z-index: 100;
+            right: 0;
+            margin-top: 2px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #F5F5F5;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: #F5F5F5;
+        }
+        
+        .dropdown-item input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .dropdown-item label {
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .country-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-left: auto;
+            border: 1px solid #E8E8E8;
+        }
+        
         .wide-card .chart-wrapper {
             height: 240px;
             position: relative;
@@ -467,7 +560,51 @@
 
         <!-- Trade Openness Chart - Full Width but Reduced Height -->
         <div class="wide-card">
-            <h2>Handelsåbenhed (Handel/BNP %)</h2>
+            <h2>Handelsåbenhed (Handel/BNP %)
+                <div class="country-selector">
+                    <button class="dropdown-button" id="countryDropdownBtn">
+                        Vælg lande ▼
+                    </button>
+                    <div class="dropdown-content" id="countryDropdown">
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="checkbox" value="World" checked> Verden
+                                <span class="country-color" style="background: #4D4D4D;"></span>
+                            </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="checkbox" value="EU" checked> EU
+                                <span class="country-color" style="background: #F5D547;"></span>
+                            </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="checkbox" value="Denmark" checked> Danmark
+                                <span class="country-color" style="background: #C60C30;"></span>
+                            </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="checkbox" value="China" checked> Kina
+                                <span class="country-color" style="background: #EE3A36;"></span>
+                            </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="checkbox" value="India" checked> Indien
+                                <span class="country-color" style="background: #FF9933;"></span>
+                            </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="checkbox" value="USA" checked> USA
+                                <span class="country-color" style="background: #005A8C;"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </h2>
             <div class="slider-container">
                 <div class="slider-wrapper">
                     <div class="slider-track"></div>
@@ -1574,6 +1711,9 @@
             setupDualRangeSlider('geo', 0, 67, 'geo', true);
             setupDualRangeSlider('tpu', 0, 67, 'tpu', true);
 
+            // Setup country selector dropdown
+            setupCountrySelector();
+
             // Try to fetch live data
             const liveSuccess = await dataManager.fetchLiveData();
             
@@ -1595,6 +1735,105 @@
                         new Date().toLocaleTimeString('da-DK');
                 }
             }, config.updateInterval);
+        }
+
+        // Country selector dropdown functionality
+        function setupCountrySelector() {
+            const dropdownBtn = document.getElementById('countryDropdownBtn');
+            const dropdown = document.getElementById('countryDropdown');
+            
+            // Toggle dropdown on button click
+            dropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+                // Update button text to show arrow direction
+                if (dropdown.classList.contains('show')) {
+                    dropdownBtn.innerHTML = 'Vælg lande ▲';
+                } else {
+                    dropdownBtn.innerHTML = 'Vælg lande ▼';
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                dropdown.classList.remove('show');
+                dropdownBtn.innerHTML = 'Vælg lande ▼';
+            });
+            
+            // Prevent dropdown from closing when clicking inside it
+            dropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Handle checkbox changes
+            const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateTradeChartVisibility();
+                });
+            });
+        }
+
+        // Update trade chart visibility based on selected countries
+        function updateTradeChartVisibility() {
+            const checkboxes = document.querySelectorAll('#countryDropdown input[type="checkbox"]');
+            const selectedCountries = [];
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedCountries.push(checkbox.value);
+                }
+            });
+            
+            // Update chart datasets visibility
+            const chart = chartManager.charts.tradeOpenness;
+            if (chart) {
+                chart.data.datasets.forEach(dataset => {
+                    let countryKey = dataset.label;
+                    // Map Danish labels to data keys
+                    if (countryKey === 'Verden') countryKey = 'World';
+                    else if (countryKey === 'Danmark') countryKey = 'Denmark';
+                    else if (countryKey === 'Kina') countryKey = 'China';
+                    else if (countryKey === 'Indien') countryKey = 'India';
+                    
+                    dataset.hidden = !selectedCountries.includes(countryKey);
+                });
+                chart.update();
+            }
+            
+            // Update metrics visibility
+            updateMetricsVisibility(selectedCountries);
+        }
+
+        // Update metrics visibility based on selected countries
+        function updateMetricsVisibility(selectedCountries) {
+            const metricsMap = {
+                'World': 'worldTrade',
+                'EU': 'euTrade',
+                'China': 'chinaTrade',
+                'USA': 'usaTrade',
+                'India': 'indiaTrade',
+                'Denmark': 'denmarkTrade'
+            };
+            
+            Object.keys(metricsMap).forEach(country => {
+                const metricElement = document.getElementById(metricsMap[country]);
+                if (metricElement && metricElement.parentElement) {
+                    metricElement.parentElement.style.display = 
+                        selectedCountries.includes(country) ? 'flex' : 'none';
+                }
+            });
+            
+            // Adjust grid columns based on visible metrics
+            const visibleCount = selectedCountries.length;
+            const metricsGrid = document.querySelector('.wide-metrics-grid');
+            if (metricsGrid) {
+                if (visibleCount <= 3) {
+                    metricsGrid.style.gridTemplateColumns = `repeat(${visibleCount}, 1fr)`;
+                } else {
+                    metricsGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(140px, 1fr))';
+                }
+            }
         }
 
         // Start the dashboard
