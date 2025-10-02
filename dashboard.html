@@ -71,7 +71,6 @@
             transform: translateY(-1px);
         }
         
-        /* Country selector dropdown styles */
         .country-selector {
             position: relative;
             display: inline-block;
@@ -239,7 +238,6 @@
             letter-spacing: 0.01em;
         }
         
-        /* Dual Range Slider Styles */
         .slider-container {
             margin: 10px auto 10px;
             width: 85%;
@@ -333,108 +331,61 @@
             body {
                 background: white;
                 padding: 0;
-                margin: 0;
-                font-size: 11pt;
             }
             
             .dashboard {
                 max-width: 100%;
-                padding: 10mm 15mm;
             }
             
             h1 {
-                font-size: 18pt;
-                margin-bottom: 10px;
+                font-size: 20pt;
+                margin-bottom: 15px;
                 page-break-after: avoid;
-                text-align: center;
             }
             
-            .status-bar {
-                display: none;
+            .status-bar, .print-button, .country-selector, .slider-container {
+                display: none !important;
             }
             
-            .print-button {
-                display: none;
-            }
-            
-            /* Grid layout - SINGLE COLUMN for print */
             .grid {
-                display: block !important;
-                page-break-before: avoid;
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px;
+                page-break-inside: avoid;
             }
             
-            /* Individual cards - one per row */
             .card {
                 page-break-inside: avoid;
                 break-inside: avoid;
                 box-shadow: none;
                 border: 1px solid #999;
-                padding: 10px;
-                margin-bottom: 15px;
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-            
-            /* Special page break rules */
-            .card:nth-child(1) {
-                page-break-before: avoid;
-            }
-            
-            .card:nth-child(2) {
-                page-break-before: always;
-            }
-            
-            .card:nth-child(3) {
-                page-break-before: avoid;
-            }
-            
-            .card:nth-child(4) {
-                page-break-before: always;
-            }
-            
-            .card:nth-child(5) {
-                page-break-before: avoid;
+                padding: 12px;
+                margin: 0;
             }
             
             .card h2 {
-                font-size: 11pt;
+                font-size: 12pt;
                 margin-bottom: 8px;
             }
             
-            /* Chart dimensions for grid cards */
             .card .chart-wrapper {
-                height: 160px !important;
-                min-height: 160px !important;
-                max-height: 160px !important;
-                width: 100% !important;
+                height: 180px !important;
+                min-height: 180px !important;
+                max-height: 180px !important;
                 margin-bottom: 8px;
-                position: relative;
             }
             
             .card canvas {
-                max-height: 160px !important;
-                height: 160px !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-            
-            /* Hide sliders in print */
-            .slider-container {
-                display: none !important;
-            }
-            
-            /* Hide country selector in print */
-            .country-selector {
-                display: none !important;
+                max-height: 180px !important;
+                height: 180px !important;
             }
             
             .metric {
                 background: #f9f9f9;
                 border: 1px solid #ccc;
-                padding: 4px 6px;
+                padding: 5px 8px;
                 font-size: 8pt;
-                margin: 0;
+                margin: 3px 0;
             }
             
             .metric-value {
@@ -442,48 +393,26 @@
             }
             
             .trend {
-                font-size: 6pt;
-                padding: 1px 2px;
+                font-size: 7pt;
+                padding: 1px 3px;
             }
             
-            /* Citations */
             .citation {
                 font-size: 7pt;
-                color: #666;
-                page-break-inside: avoid;
                 margin-top: 5px;
-                font-style: italic;
             }
             
-            /* Hide interactive elements */
-            .slider-left, .slider-right, .slider-track, .slider-range {
-                display: none !important;
-            }
-            
-            /* Ensure live indicator is hidden */
-            .live-indicator {
-                display: none !important;
-            }
-            
-            /* Chart.js specific adjustments for print */
             canvas {
-                image-rendering: optimizeQuality;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
             
-            /* Page setup */
             @page {
-                size: A4 portrait;
-                margin: 15mm 10mm;
-            }
-            
-            @page:first {
-                margin-top: 10mm;
+                size: A4 landscape;
+                margin: 12mm;
             }
         }
         
-        /* Responsive adjustments */
         @media (max-width: 900px) {
             .grid {
                 grid-template-columns: 1fr;
@@ -515,7 +444,6 @@
         </div>
 
         <div class="grid">
-            <!-- Trade Openness Chart -->
             <div class="card">
                 <h2>Handelsåbenhed (Handel/BNP %)
                     <div class="country-selector">
@@ -615,7 +543,6 @@
                 </div>
             </div>
 
-            <!-- Export Volumes Chart -->
             <div class="card">
                 <h2>Vareeksport (USD)
                     <div class="country-selector">
@@ -733,7 +660,6 @@
                 </div>
             </div>
 
-            <!-- Currency Usage Trends - NO SLIDER -->
             <div class="card">
                 <h2>Reservevaluta Status</h2>
                 <div class="chart-wrapper">
@@ -748,7 +674,6 @@
                 </div>
             </div>
 
-            <!-- FDI as % of GDP Comparison -->
             <div class="card">
                 <h2>Indgående FDI % af BNP (åbenhed)</h2>
                 <div class="slider-container">
@@ -789,7 +714,6 @@
                 </div>
             </div>
 
-            <!-- Harmful Trade Restrictions -->
             <div class="card">
                 <h2>Skadelige handelsrestriktioner</h2>
                 <div class="slider-container">
@@ -818,7 +742,6 @@
                 </div>
             </div>
 
-            <!-- Geopolitical Risk Index -->
             <div class="card">
                 <h2>Geopolitisk Risiko Indeks</h2>
                 <div class="slider-container">
@@ -847,7 +770,6 @@
                 </div>
             </div>
 
-            <!-- Trade Policy Uncertainty Index -->
             <div class="card">
                 <h2>Handelspolitisk Usikkerhedsindeks</h2>
                 <div class="slider-container">
@@ -880,14 +802,12 @@
     </div>
 
     <script>
-        // Configuration
         const config = {
             staticDataPath: 'data/',
             githubRepo: 'mathov92/geofrag-dashboard',
             updateInterval: 300000
         };
 
-        // Data Manager
         class DataManager {
             constructor() {
                 this.cache = {};
@@ -909,7 +829,6 @@
                     const parts = lines[i].split('\t');
                     const country = parts[0];
                     const values = parts.slice(1).map(v => {
-                        // Parse the value, removing spaces and converting to number
                         const cleaned = v.replace(/\s/g, '').replace(/\./g, '');
                         return parseFloat(cleaned) || 0;
                     });
@@ -921,7 +840,6 @@
 
             async loadStaticData() {
                 try {
-                    // Parse the export data from the TSV
                     const exportTSV = `	2019-03	2019-04	2019-05	2019-06	2019-07	2019-08	2019-09	2019-10	2019-11	2019-12	2020-01	2020-02	2020-03	2020-04	2020-05	2020-06	2020-07	2020-08	2020-09	2020-10	2020-11	2020-12	2021-01	2021-02	2021-03	2021-04	2021-05	2021-06	2021-07	2021-08	2021-09	2021-10	2021-11	2021-12	2022-01	2022-02	2022-03	2022-04	2022-05	2022-06	2022-07	2022-08	2022-09	2022-10	2022-11	2022-12	2023-01	2023-02	2023-03	2023-04	2023-05	2023-06	2023-07	2023-08	2023-09	2023-10	2023-11	2023-12	2024-01	2024-02	2024-03	2024-04	2024-05	2024-06	2024-07	2024-08	2024-09	2024-10	2024-11	2024-12	2025-01	2025-02	2025-03	2025-04	2025-05	2025-06	2025-07	2025-08
 EU27	 28.003.967.112 	 26.668.330.476 	 29.599.900.364 	 30.321.679.631 	 31.556.918.652 	 31.930.555.835 	 32.114.672.045 	 31.388.754.550 	 30.648.724.497 	 31.801.219.990 	 32.972.772.026 	 26.674.400.083 	 23.463.970.726 	 22.729.678.104 	 30.829.651.588 	 33.746.190.845 	 35.316.818.093 	 35.348.481.596 	 35.556.646.873 	 34.441.339.655 	 35.095.538.832 	 37.654.479.564 	 39.756.721.214 	 38.469.354.798 	 36.542.571.425 	 36.415.206.877 	 38.379.751.881 	 40.430.036.886 	 41.559.168.275 	 43.659.042.612 	 44.099.721.520 	 45.871.462.351 	 47.169.387.993 	 50.015.613.704 	 51.281.605.493 	 47.619.811.043 	 44.951.557.358 	 41.874.636.323 	 44.925.879.607 	 46.951.108.824 	 50.508.199.504 	 51.651.716.865 	 50.425.422.848 	 47.294.067.944 	 45.059.991.043 	 43.904.295.646 	 44.900.319.043 	 40.867.770.474 	 41.494.705.841 	 40.597.279.127 	 44.648.733.872 	 44.249.975.594 	 43.602.145.056 	 42.494.808.564 	 41.699.996.363 	 40.490.720.849 	 39.572.327.632 	 39.993.216.832 	 41.713.802.325 	 40.482.594.022 	 39.291.149.442 	 39.089.572.170 	 42.210.766.661 	 44.392.280.594 	 45.250.436.539 	 46.138.365.112 	 44.911.871.755 	 44.153.976.280 	 42.231.966.018 	 43.742.232.864 	 45.088.263.892 	 41.183.200.065 	 39.573.245.276 	 38.920.748.543 	 45.286.853.071 	 47.366.489.905 	 48.317.138.971 	 48.935.318.830 
 Afrika	 7.168.067.929 	 6.869.666.213 	 8.397.641.296 	 8.809.867.574 	 9.166.218.599 	 8.958.433.242 	 8.992.520.762 	 8.656.947.768 	 8.648.034.618 	 9.557.508.764 	 10.063.679.212 	 7.943.994.500 	 6.568.348.176 	 5.854.532.083 	 7.737.138.395 	 8.290.395.979 	 8.781.763.863 	 9.319.808.319 	 9.645.745.883 	 9.658.314.283 	 9.992.689.689 	 10.701.956.931 	 11.400.567.325 	 10.374.952.392 	 9.222.826.368 	 8.912.141.117 	 10.151.034.782 	 11.428.092.258 	 11.836.037.286 	 12.320.027.910 	 12.430.152.322 	 12.596.912.650 	 12.518.366.747 	 12.550.726.223 	 13.209.020.627 	 11.559.639.899 	 10.903.512.125 	 9.653.380.815 	 11.469.798.145 	 12.898.815.708 	 14.095.756.491 	 14.332.991.018 	 13.847.595.511 	 13.377.647.866 	 13.150.331.406 	 12.993.059.339 	 13.438.832.396 	 11.766.809.635 	 12.406.033.645 	 12.849.334.227 	 15.122.729.129 	 14.794.482.266 	 14.146.361.940 	 13.555.123.675 	 13.394.632.965 	 13.048.080.785 	 13.233.647.529 	 13.421.912.001 	 14.551.642.045 	 13.572.237.769 	 12.768.777.766 	 11.906.469.653 	 12.833.343.811 	 13.389.934.166 	 13.096.417.001 	 13.171.397.956 	 13.145.457.366 	 14.025.133.117 	 14.471.578.835 	 15.946.287.192 	 16.121.505.748 	 13.889.562.019 	 12.904.714.963 	 12.748.044.023 	 15.408.436.613 	 15.997.634.104 	 16.363.602.671 	 16.099.096.189 
@@ -1089,14 +1007,12 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             }
         }
 
-        // Chart Manager
         class ChartManager {
             constructor() {
                 this.charts = {};
             }
 
             initCharts(data) {
-                // Trade Openness Chart
                 this.charts.tradeOpenness = new Chart(document.getElementById('tradeOpennessChart'), {
                     type: 'line',
                     data: {
@@ -1192,7 +1108,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // Export Volume Chart
                 const exportDatasets = [];
                 const colorMap = {
                     'EU27': '#F5D547',
@@ -1206,7 +1121,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     'Ungarn': '#CE2939'
                 };
                 
-                // Create datasets for selected countries (initially EU27, USA, Indien)
                 const initialCountries = ['EU27', 'USA', 'Indien'];
                 initialCountries.forEach(country => {
                     if (data.exportData.countries[country]) {
@@ -1244,7 +1158,7 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        const value = context.parsed.y / 1e9; // Convert to billions
+                                        const value = context.parsed.y / 1e9;
                                         return context.dataset.label + ': ' + value.toFixed(2) + ' mia.';
                                     }
                                 }
@@ -1262,7 +1176,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                                     maxTicksLimit: 12,
                                     callback: function(val, index) {
                                         const label = this.getLabelForValue(val);
-                                        // Show only January labels
                                         return label && label.includes('-01') ? label.substring(0, 7) : '';
                                     }
                                 }
@@ -1285,7 +1198,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // Currency Chart
                 this.charts.currency = new Chart(document.getElementById('currencyChart'), {
                     type: 'bar',
                     data: {
@@ -1316,7 +1228,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // FDI Chart
                 this.charts.fdiGdp = new Chart(document.getElementById('fdiGdpChart'), {
                     type: 'line',
                     data: {
@@ -1374,7 +1285,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // Trade Restrictions Chart
                 this.charts.restrictions = new Chart(document.getElementById('restrictionsChart'), {
                     type: 'bar',
                     data: {
@@ -1438,7 +1348,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // Geopolitical Risk Index Chart
                 this.charts.geoRisk = new Chart(document.getElementById('geoRiskChart'), {
                     type: 'line',
                     data: {
@@ -1503,7 +1412,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     }
                 });
 
-                // Trade Policy Uncertainty Index Chart
                 this.charts.tpu = new Chart(document.getElementById('tpuChart'), {
                     type: 'line',
                     data: {
@@ -1580,11 +1488,9 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             }
         }
 
-        // Global variables
         let dataManager;
         let chartManager;
 
-        // Dual Range Slider Setup
         function setupDualRangeSlider(prefix, min, max, chartType, isMonthly = false) {
             const leftSlider = document.getElementById(prefix + 'Min');
             const rightSlider = document.getElementById(prefix + 'Max');
@@ -1595,7 +1501,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                 let minVal = parseInt(leftSlider.value);
                 let maxVal = parseInt(rightSlider.value);
                 
-                // Prevent crossing
                 if (minVal > maxVal - 1) {
                     leftSlider.value = maxVal - 1;
                     minVal = maxVal - 1;
@@ -1605,13 +1510,11 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     maxVal = minVal + 1;
                 }
                 
-                // Update range bar position
                 const minPercent = ((minVal - min) / (max - min)) * 100;
                 const maxPercent = ((maxVal - min) / (max - min)) * 100;
                 rangeBar.style.left = minPercent + '%';
                 rangeBar.style.width = (maxPercent - minPercent) + '%';
                 
-                // Update display
                 if (isMonthly) {
                     const dates = dataManager.originalData[chartType === 'geo' ? 'geoRiskIndex' : 
                                                            chartType === 'tpu' ? 'tpuIndex' : 
@@ -1621,18 +1524,15 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                     displayElement.textContent = `${minVal} - ${maxVal}`;
                 }
                 
-                // Update chart
                 updateChartByRange(chartType, minVal, maxVal);
             }
             
             leftSlider.addEventListener('input', updateSliders);
             rightSlider.addEventListener('input', updateSliders);
             
-            // Initial update
             updateSliders();
         }
 
-        // Update chart based on range selection
         function updateChartByRange(chartType, startValue, endValue) {
             const filteredData = dataManager.filterDataByYearRange(chartType, startValue, endValue);
             if (!filteredData) return;
@@ -1812,7 +1712,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
         }
 
         function updateExportMetrics(data) {
-            // Update metrics for the main countries
             const metricsToUpdate = [
                 { id: 'eu27Export', country: 'EU27', trendId: 'eu27Trend' },
                 { id: 'usaExport', country: 'USA', trendId: 'usaExportTrend' },
@@ -1825,7 +1724,7 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             metricsToUpdate.forEach(metric => {
                 const values = data.countries[metric.country];
                 if (values && values.length > 0) {
-                    const currentValue = values[values.length - 1] / 1e9; // Convert to billions
+                    const currentValue = values[values.length - 1] / 1e9;
                     document.getElementById(metric.id).textContent = currentValue.toFixed(1) + ' mia.';
                     
                     if (values.length > 1) {
@@ -1967,11 +1866,9 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
         }
 
         function updateAllMetrics(data) {
-            // Update currency share (doesn't change with filter)
             document.getElementById('usdShare').textContent = 
                 data.currencyData.current[0] + '%';
             
-            // Update all other metrics
             updateTradeMetrics(data.tradeOpenness);
             updateFdiMetrics(data.fdiGdpData);
             updateRestrictionsMetrics(data.tradeRestrictions);
@@ -1980,7 +1877,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             updateExportMetrics(data.exportData);
         }
 
-        // Initialize Dashboard
         async function initDashboard() {
             dataManager = new DataManager();
             chartManager = new ChartManager();
@@ -1994,7 +1890,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             chartManager.initCharts(staticData);
             updateAllMetrics(staticData);
 
-            // Setup dual range sliders
             setupDualRangeSlider('trade', 2000, 2024, 'trade');
             setupDualRangeSlider('export', 0, 77, 'export', true);
             setupDualRangeSlider('fdi', 2015, 2025, 'fdi');
@@ -2002,11 +1897,9 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             setupDualRangeSlider('geo', 0, 67, 'geo', true);
             setupDualRangeSlider('tpu', 0, 67, 'tpu', true);
 
-            // Setup country selector dropdowns
             setupCountrySelector();
             setupExportCountrySelector();
 
-            // Try to fetch live data
             const liveSuccess = await dataManager.fetchLiveData();
             
             if (liveSuccess) {
@@ -2019,7 +1912,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             document.getElementById('lastUpdate').textContent = 
                 new Date().toLocaleTimeString('da-DK');
 
-            // Set up periodic updates
             setInterval(async () => {
                 const updated = await dataManager.fetchLiveData();
                 if (updated) {
@@ -2029,16 +1921,13 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             }, config.updateInterval);
         }
 
-        // Country selector dropdown functionality
         function setupCountrySelector() {
             const dropdownBtn = document.getElementById('countryDropdownBtn');
             const dropdown = document.getElementById('countryDropdown');
             
-            // Toggle dropdown on button click
             dropdownBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 dropdown.classList.toggle('show');
-                // Update button text to show arrow direction
                 if (dropdown.classList.contains('show')) {
                     dropdownBtn.innerHTML = 'Vælg lande ▲';
                 } else {
@@ -2046,18 +1935,15 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                 }
             });
             
-            // Close dropdown when clicking outside
             document.addEventListener('click', function() {
                 dropdown.classList.remove('show');
                 dropdownBtn.innerHTML = 'Vælg lande ▼';
             });
             
-            // Prevent dropdown from closing when clicking inside it
             dropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
             
-            // Handle checkbox changes
             const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
@@ -2066,16 +1952,13 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             });
         }
 
-        // Export country selector dropdown functionality
         function setupExportCountrySelector() {
             const dropdownBtn = document.getElementById('exportDropdownBtn');
             const dropdown = document.getElementById('exportDropdown');
             
-            // Toggle dropdown on button click
             dropdownBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 dropdown.classList.toggle('show');
-                // Update button text to show arrow direction
                 if (dropdown.classList.contains('show')) {
                     dropdownBtn.innerHTML = 'Vælg lande ▲';
                 } else {
@@ -2083,22 +1966,18 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                 }
             });
             
-            // Close dropdown when clicking outside
             document.addEventListener('click', function() {
                 dropdown.classList.remove('show');
                 dropdownBtn.innerHTML = 'Vælg lande ▼';
             });
             
-            // Prevent dropdown from closing when clicking inside it
             dropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
             
-            // Handle checkbox changes
             const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
-                    // Update the export chart with current slider range
                     const minVal = parseInt(document.getElementById('exportMin').value);
                     const maxVal = parseInt(document.getElementById('exportMax').value);
                     updateChartByRange('export', minVal, maxVal);
@@ -2106,7 +1985,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             });
         }
 
-        // Update trade chart visibility based on selected countries
         function updateTradeChartVisibility() {
             const checkboxes = document.querySelectorAll('#countryDropdown input[type="checkbox"]');
             const selectedCountries = [];
@@ -2117,12 +1995,10 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                 }
             });
             
-            // Update chart datasets visibility
             const chart = chartManager.charts.tradeOpenness;
             if (chart) {
                 chart.data.datasets.forEach(dataset => {
                     let countryKey = dataset.label;
-                    // Map Danish labels to data keys
                     if (countryKey === 'Verden') countryKey = 'World';
                     else if (countryKey === 'Danmark') countryKey = 'Denmark';
                     else if (countryKey === 'Kina') countryKey = 'China';
@@ -2133,11 +2009,9 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
                 chart.update();
             }
             
-            // Update metrics visibility
             updateMetricsVisibility(selectedCountries);
         }
 
-        // Update metrics visibility based on selected countries
         function updateMetricsVisibility(selectedCountries) {
             const metricsMap = {
                 'World': 'worldTrade',
@@ -2157,7 +2031,6 @@ Ungarn	 532.136.875 	 504.895.165 	 522.863.800 	 506.895.791 	 530.202.889 	 55
             });
         }
 
-        // Start the dashboard
         window.addEventListener('DOMContentLoaded', initDashboard);
     </script>
 </body>
